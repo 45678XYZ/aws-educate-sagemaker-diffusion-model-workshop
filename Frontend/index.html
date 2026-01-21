@@ -1,0 +1,2150 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>0131-AIF-SageMaker-Workshop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+TC:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/dom-to-image-more@2.9.5/dist/dom-to-image-more.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+      :root {
+        --bg-deep: #0b0c15;
+        --bg-panel: #151725;
+        --border-gold: #d4af37;
+        --border-gold-dim: #7a6625;
+        --text-gold: #f2d06b;
+        --text-parchment: #e0d8c3;
+        --text-muted: #8b8b9b;
+        --magic-glow: #aa80ff;
+        --magic-cyan: #00fff2;
+        --magic-red: #ef4444;
+        --card-yellow: #eec136;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Cinzel", "Noto Serif TC", serif;
+        background-color: var(--bg-deep);
+        background-image: radial-gradient(
+          circle at 50% 0%,
+          #2a2135 0%,
+          var(--bg-deep) 70%
+        );
+        color: var(--text-parchment);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        letter-spacing: 0.5px;
+      }
+
+      /* ================= 標題區 ================= */
+      header {
+        text-align: center;
+        padding: 30px 20px;
+        border-bottom: 1px solid var(--border-gold-dim);
+        width: 100%;
+        background: rgba(11, 12, 21, 0.8);
+        backdrop-filter: blur(5px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      h1 {
+        font-family: "Cinzel", "Noto Serif TC", serif;
+        font-size: 2.2rem;
+        margin: 0;
+        color: var(--text-gold);
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        letter-spacing: 2px;
+      }
+
+      p.subtitle {
+        color: var(--text-muted);
+        margin: 5px 0 0 0;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        font-family: "Cinzel", "Noto Serif TC", serif;
+      }
+
+      /* ================= 主工作區 ================= */
+      .workshop-container {
+        display: grid;
+        grid-template-columns: 300px 1fr 300px; /* 左:圖片, 中:卡牌, 右:敘述 */
+        gap: 20px;
+        width: 100%;
+        max-width: 1400px;
+        padding: 20px;
+        flex-grow: 1;
+        align-items: start;
+      }
+
+      @media (max-width: 1100px) {
+        .workshop-container {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto;
+        }
+      }
+
+      /* 通用面板樣式 */
+      .panel {
+        background-color: var(--bg-panel);
+        border: 1px solid var(--border-gold-dim);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .panel-title {
+        font-family: "Cinzel", "Noto Serif TC", serif;
+        color: var(--text-gold);
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        border-bottom: 1px solid var(--border-gold-dim);
+        padding-bottom: 10px;
+        text-align: center;
+        font-weight: 700;
+      }
+
+      /* ================= 左側：圖片與連線 ================= */
+      details {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-gold-dim);
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      #control-panel {
+        max-height: 550px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        direction: rtl;
+      }
+
+      #control-panel > * {
+        direction: ltr;
+      }
+      #control-panel::-webkit-scrollbar {
+        width: 8px;
+      }
+      #control-panel::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+      }
+      #control-panel::-webkit-scrollbar-thumb {
+        background: var(--border-gold-dim);
+        border-radius: 4px;
+        border: 1px solid transparent;
+        background-clip: content-box;
+      }
+      #control-panel::-webkit-scrollbar-thumb:hover {
+        background: var(--border-gold);
+      }
+
+      summary {
+        cursor: pointer;
+        color: var(--text-muted);
+        font-weight: bold;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "Cinzel", "Noto Serif TC", serif;
+      }
+      summary::after {
+        content: "+";
+        font-size: 1.2em;
+        color: var(--text-gold);
+      }
+
+      details[open] summary::after {
+        content: "-";
+      }
+
+      .config-section {
+        font-size: 0.8rem;
+        font-family: "Cinzel", "Noto Serif TC", serif;
+      }
+
+      .form-group {
+        margin-bottom: 12px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-gold);
+        margin-bottom: 4px;
+        font-family: "Cinzel", "Noto Serif TC", serif; 
+        font-weight: 700;
+      }
+
+      .form-group input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        background-color: #08090f;
+        border: 1px solid #333;
+        border-radius: 4px;
+        color: var(--text-parchment);
+        font-family: "Noto Sans TC", sans-serif;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      .form-group input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--border-gold);
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+      }
+
+      /* 通用按鈕樣式 */
+      button {
+        background: linear-gradient(135deg, #3b2d50, #2a1f3d);
+        color: var(--text-gold);
+        border: 1px solid var(--border-gold);
+        padding: 10px 20px;
+        font-family: "Cinzel", "Noto Serif TC", serif;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      button:hover:not(:disabled) {
+        background: linear-gradient(135deg, #584175, #3b2d50);
+        box-shadow: 0 0 15px rgba(170, 128, 255, 0.4);
+        text-shadow: 0 0 5px var(--text-gold);
+      }
+
+      button:disabled {
+        border-color: #444;
+        color: #666;
+        cursor: not-allowed;
+        background: #1a1a1a;
+      }
+
+      #connect-btn {
+        width: 100%;
+        font-size: 0.8rem;
+      }
+
+      #btn {
+        /* 基礎結構 */
+        width: 100%;
+        margin-top: 10px;
+        font-size: 1.1rem;
+        padding: 15px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        font-family: "Cinzel", "Noto Serif TC", serif;
+        border: 1px solid transparent;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      #btn.status-disconnected {
+        background: linear-gradient(135deg, #5a1e1e, #3d1414);
+        border-color: #ff6b6b;
+        color: #ffcccc;
+        cursor: not-allowed;
+        opacity: 0.8;
+      }
+
+      #btn.status-ready {
+        background: linear-gradient(135deg, #3b2d50, #2a1f3d);
+        border-color: var(--border-gold);
+        color: var(--text-gold);
+        cursor: pointer;
+      }
+
+      #btn.status-ready:hover {
+        background: linear-gradient(135deg, #584175, #3b2d50);
+        box-shadow: 0 0 20px rgba(170, 128, 255, 0.6);
+        text-shadow: 0 0 8px var(--text-gold);
+        transform: translateY(-2px);
+      }
+
+      #btn.status-generating {
+        background: linear-gradient(135deg, #0f3d3e, #062b2e);
+        border-color: var(--magic-cyan);
+        color: var(--magic-cyan);
+        cursor: wait;
+        box-shadow: 0 0 25px rgba(0, 255, 242, 0.2);
+      }
+
+      #btn.status-generating {
+        animation: pulse-border 2s infinite;
+      }
+
+      @keyframes pulse-border {
+        0% { box-shadow: 0 0 10px rgba(0, 255, 242, 0.1); }
+        50% { box-shadow: 0 0 25px rgba(0, 255, 242, 0.4); }
+        100% { box-shadow: 0 0 10px rgba(0, 255, 242, 0.1); }
+      }
+
+      textarea#prompt {
+        min-height: 120px;
+        border-color: var(--border-gold-dim);
+        font-style: italic;
+      }
+
+      #status-container {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.9rem;
+        min-height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .spinner {
+        display: none;
+        width: 16px;
+        height: 16px;
+        border: 2px solid transparent;
+        border-top-color: var(--magic-cyan);
+        border-right-color: var(--magic-cyan);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .energy-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 5px;
+      }
+      .energy-btn {
+        width: 20px;
+        height: 20px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.1s;
+        line-height: 0;          
+        font-size: 0;
+        padding: 0;
+        appearance: none;
+      }
+      .energy-btn:active {
+        transform: scale(0.9);
+      }
+      .btn-clear {
+        padding: 5px 10px;
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .cost-circle svg,
+      .type-icon svg,
+      .energy-btn svg {
+        width: 70%;
+        height: 70%;
+        pointer-events: none;
+        filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+        display: block;
+      }
+
+      .cost-colorless svg {
+        filter: none;
+      }
+
+      input[type=range].slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 16px;
+        background: transparent;
+        outline: none;
+        margin: 10px 0;
+        cursor: pointer;
+      }
+
+      input[type=range].slider::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 4px;
+        border-radius: 2px;
+        background: #333;
+        cursor: pointer;
+      }
+
+      input[type=range].slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--border-gold);
+        box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+        transition: .2s;
+        margin-top: -3px;
+      }
+
+      input[type=range].slider::-webkit-slider-thumb:hover {
+        background: var(--magic-cyan);
+        transform: scale(1.2);
+      }
+
+      /* ================= 中間：卡牌預覽區 ================= */
+      
+      .card-preview-area {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        background-color: transparent;
+      }
+
+      .card-card {
+        width: 320px;
+        height: 450px;
+        position: relative;
+        overflow: hidden;
+        box-sizing: border-box;
+        border-radius: 15px;
+        background-color: #d0d0d0;
+        background: linear-gradient(
+          115deg,
+          #858585 0%,
+          #cecece 25%,
+          #ffffff 45%,
+          #b0b0b0 55%,
+          #d0d0d0 75%,
+          #909090 100%
+        );
+        padding: 12px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+          inset 0 0 15px rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        user-select: none;
+        color: #2a2a2a;
+        font-family: "Noto Sans TC", "Segoe UI", "Chocolate Classical Sans", Tahoma, sans-serif;
+      }
+
+      .card-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.3) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        transform: rotate(30deg);
+        pointer-events: none;
+      }
+      .card-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0,0,0,0.15) 100%
+        );
+        pointer-events: none;
+      }
+
+      .card-card.is-darkness .name,
+      .card-card.is-darkness .hp-text,
+      .card-card.is-darkness .hp-value,
+      .card-card.is-darkness .move-name,
+      .card-card.is-darkness .move-damage,
+      .card-card.is-darkness .move-desc {
+        color: #ffffff !important;
+      }
+
+      .card-frame {
+        box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.2),
+          0 0 0 1px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        height: 100%;
+        border-radius: 6px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        z-index: 1;
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 12px;
+      }
+      .name {
+        font-size: 18px;
+        font-weight: 550;
+        padding: 0px 2px;
+        white-space: nowrap;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .hp-group {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .hp-text {
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .hp-value {
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .type-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        background: #333;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        border: 1px solid white;
+        line-height: 0;
+      }
+
+      .image-container {
+        width: 265px;
+        height: 160px;
+        margin: 0 auto;
+        background: #eee;
+        border: 3px solid #c7c4b7;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        position: relative;
+      }
+      .image-container::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.6),
+          inset -1px -1px 3px rgba(255, 255, 255, 0.3);
+        pointer-events: none;
+        z-index: 3;
+      }
+      .card-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .info-bar {
+        text-align: center;
+        font-size: 7px;
+        font-style: italic;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.8),
+          transparent
+        );
+        margin: 5px 0;
+        padding: 2px 0;
+        color: #222;
+        width: 100%;
+      }
+
+      .moves-container {
+        padding: 10px 15px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+
+      .moves-container.single-move-layout {
+        justify-content: flex-start;
+        padding-top: 45px;
+      }
+      .move {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0;
+        position: relative;
+      }
+
+      .move-top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        min-height: 32px;
+        position: relative;
+      }
+
+      .move-name-container {
+        position: absolute;
+        left: 100px;
+        text-align: left;
+        white-space: nowrap;
+        z-index: 1;
+        max-width: 130px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .move-name {
+        font-size: 14px;
+        font-weight: 550;
+        color: #111;
+        letter-spacing: 1px;
+        max-width: 130px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .move-damage {
+        font-size: 14px;
+        font-weight: 900;
+        color: #000;
+        text-align: right;
+        z-index: 2;
+      }
+
+      .move-desc {
+        font-size: 10px;
+        color: #222;
+        line-height: 1.4;
+        margin-top: 2px;
+        font-weight: 500;
+        white-space: pre-wrap;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        width: 100%;
+      }
+
+      .move-cost {
+        display: flex;
+        gap: 3px;
+        margin-top: 3px;
+        min-width: 18px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        max-width: 90px;
+      }
+      .cost-circle {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ddd;
+        box-shadow: 
+          inset 2px 2px 2px rgba(255, 255, 255, 0.5),
+          inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+          1px 2px 4px rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        line-height: 0;
+        position: relative;
+      }
+
+      /* 能量漸層樣式 */
+      
+      .cost-fire {
+        background: radial-gradient(circle at 65% 65%, #ff8e92, #ff5e62, #c0392b);
+      }
+
+      .cost-water {
+        background: radial-gradient(circle at 65% 65%, #56ccf2, #2f80ed, #0b486b);
+      }
+
+      .cost-grass {
+        background: radial-gradient(circle at 65% 65%, #88e08b, #4cae50, #1b5e20);
+      }
+
+      .cost-lightning {
+        background: radial-gradient(circle at 65% 65%, #ffeaa7, #ffc342, #fbba13);
+      }
+
+      .cost-psychic {
+        background: radial-gradient(circle at 65% 65%, #d7bde2, #9b59b6, #5b2c6f);
+      }
+
+      .cost-fighting {
+        background: radial-gradient(circle at 65% 65%, #f5cba7, #e67e22, #873600);
+      }
+
+      .cost-darkness {
+        background: radial-gradient(circle at 65% 65%, #566573, #2c3e50, #17202a);
+      }
+
+      .cost-metal {
+        background: radial-gradient(circle at 65% 65%, #d7dbdd, #95a5a6, #515a5a);
+      }
+
+      .cost-dragon {
+        background: radial-gradient(circle at 65% 65%, #f4d03f, #e0a525, #7d6608);
+      }
+
+      .cost-colorless {
+        background: radial-gradient(circle at 35% 35%, #f0f3f4 0%, #ccd1d5 40%, #98a4a5 100%);
+      }
+
+      .card-footer {
+        margin-top: auto;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 0 0 6px 6px;
+        min-height: 30px;
+        padding: 5px 7px;
+        padding-left: 30px;
+        display: flex;
+        justify-content: right;
+        text-align: right;
+        font-size: 6px;
+        color: #222;
+        align-items: center;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          flex-direction: column;
+          align-items: center;
+        }
+        .editor-panel {
+          width: 100%;
+          max-width: 350px;
+        }
+      }
+
+      /* 功能按鈕群組 */
+      .card-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        width: 100%;
+        margin-top: 30px;
+      }
+
+      .action-btn {
+        flex: 1;
+        padding: 12px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      /* 下載按鈕 */
+      .btn-download {
+        border-color: var(--border-gold);
+        color: var(--text-gold);
+      }
+      .btn-download:hover {
+        background: rgba(212, 175, 55, 0.15);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+      }
+
+      /* 分享按鈕 */
+      .btn-share {
+        border-color: var(--magic-cyan);
+        color: var(--magic-cyan);
+      }
+      .btn-share:hover {
+        background: rgba(6, 182, 212, 0.15);
+        box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        text-shadow: 0 0 5px var(--magic-cyan);
+      }
+
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-content {
+        background: var(--bg-panel);
+        border: 2px solid var(--border-gold);
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 90%;
+        position: relative;
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .modal-close:hover {
+        color: var(--magic-red);
+      }
+
+      #qrcode {
+        margin: 20px auto;
+        padding: 10px;
+        background: white;
+        width: fit-content;
+        border-radius: 4px;
+      }
+
+      /* 重置按鈕 */
+      .btn-reset {
+        border-color: var(--magic-red);
+        color: var(--magic-red);
+      }
+      .btn-reset:hover {
+        background: rgba(239, 68, 68, 0.15);
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        text-shadow: 0 0 5px var(--magic-red);
+      }
+
+      /* ================= 右側：卡牌數值編輯 ================= */
+      .editor-field {
+        margin-bottom: 15px;
+      }
+
+      .editor-field label {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .editor-input {
+        width: 100%;
+        padding: 8px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-gold-dim);
+        color: var(--text-parchment);
+        border-radius: 4px;
+      }
+
+      .disabled-overlay {
+        position: relative;
+        opacity: 0.6;
+        pointer-events: none;
+      }
+
+      .editor-panel {
+        max-height: 550px; 
+        overflow-y: auto;
+        overflow-x: hidden;
+        align-self: start; 
+      }
+
+      .editor-panel::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .editor-panel::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+      }
+
+      .editor-panel::-webkit-scrollbar-thumb {
+        background: var(--border-gold-dim);
+        border-radius: 4px;
+        border: 1px solid transparent;
+        background-clip: content-box;
+      }
+
+      .editor-panel::-webkit-scrollbar-thumb:hover {
+        background: var(--border-gold);
+      }
+
+      .move-count-selector {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .move-btn {
+        flex: 1;
+        padding: 10px;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 0, 0, 0.4));
+        border-color: var(--border-gold);
+        color: var(--text-gold);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+        font-family: "Cinzel", "Noto Serif TC", serif;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .move-btn:hover {
+        border-color: var(--border-gold);
+        color: var(--text-parchment);
+      }
+
+      .move-btn.active {
+        background-color: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border-gold-dim);
+        color: var(--text-muted);
+      }
+
+      #inputType {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        width: 100%;
+        padding: 12px 15px;
+        padding-right: 40px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        background-color: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border-gold-dim);
+        color: var(--text-gold);
+        
+        font-family: "Cinzel", "Noto Serif TC", serif;
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+        font-weight: bold;
+
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 24px;
+        
+        transition: all 0.3s ease;
+      }
+
+      #inputType:hover {
+        border-color: var(--border-gold);
+        background-color: rgba(21, 23, 37, 0.8);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+      }
+
+      #inputType:focus {
+        outline: none;
+        border-color: var(--magic-cyan);
+        box-shadow: 0 0 15px rgba(0, 255, 242, 0.2);
+        color: var(--magic-cyan);
+        
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300fff2'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      }
+
+      #inputType option {
+        background-color: #151725;
+        color: var(--text-parchment);
+        padding: 10px;
+        font-family: sans-serif;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>0131-AIF-SageMaker-Workshop</h1>
+      <p class="subtitle">卡牌鍊金術：用 Amazon SageMaker 召喚你的專屬角色！</p>
+    </header>
+
+    <div class="workshop-container">
+      <section class="panel" id="control-panel">
+        <div class="panel-title">召喚角色</div>
+
+        <div class="config-section">
+          <details>
+            <summary class="summary-title">系統設置</summary>
+            <div class="config-inputs" style="margin-top: 20px">
+              <div class="form-group">
+                <label>WebSocket URL</label>
+                <input type="text" id="ws-url-input" placeholder="wss://..." />
+              </div>
+              <div class="form-group">
+                <label>API URL</label>
+                <input
+                  type="text"
+                  id="api-url-input"
+                  placeholder="https://..."
+                />
+              </div>
+              <div class="form-group">
+                <label>SageMaker Endpoint</label>
+                <input
+                  type="text"
+                  id="endpoint-name-input"
+                  placeholder="endpoint-name..."
+                />
+              </div>
+              <button id="connect-btn" onclick="saveAndConnect()">
+                Establish Link
+              </button>
+            </div>
+          </details>
+        </div>
+
+        <div class="input-group">
+          <div class="form-group">
+            <label>圖片描述（請用英文）</label>
+            <textarea
+              id="prompt"
+              placeholder="Describe the entity you wish to summon..."
+              style="resize: none;"
+            ></textarea
+            >
+          </div>
+
+          <button id="btn" onclick="generateImage()" disabled>
+            ✨ Generate Image
+          </button>
+
+          <div id="status-container">
+            <div class="spinner" id="loading-spinner"></div>
+            <span id="status" style="color: var(--text-muted)"
+              >尚未連線</span
+            >
+          </div>
+        
+          <br>
+
+          <div class="form-group">
+            <label style="display:flex; justify-content:space-between;">
+              <span>圖片大小</span>
+              <span id="val-scale" style="color:var(--magic-gold)">1.0x</span>
+            </label>
+            <input type="range" id="img-scale" min="1" max="3" step="0.1" value="1" class="slider">
+          </div>
+
+          <div class="form-group">
+            <label style="display:flex; justify-content:space-between;">
+              <span>垂直位置 (Y)</span>
+              <span id="val-pos-y" style="color:var(--text-gold)">50%</span>
+            </label>
+            <input type="range" id="img-pos-y" min="0" max="100" step="1" value="50" class="slider">
+          </div>
+
+          <div class="form-group">
+            <label style="display:flex; justify-content:space-between;">
+              <span>水平位置 (X)</span>
+              <span id="val-pos-x" style="color:var(--text-gold)">50%</span>
+            </label>
+            <input type="range" id="img-pos-x" min="0" max="100" step="1" value="50" class="slider">
+          </div>
+
+        </div>
+      </section>
+
+      <section
+        class="panel"
+        style="background: transparent; border: none; box-shadow: none"
+      >
+        <div class="card-preview-area">
+          <div class="card-card" id="cardCard">
+        <div class="card-frame" id="cardFrame">
+          <div class="card-header">
+            <div class="name" id="dispName">角色名稱</div>
+            <div class="hp-group">
+              <span class="hp-text">HP</span>
+              <span class="hp-value" id="dispHP">60</span>
+              <div class="type-icon" id="dispTypeIcon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M160.5-26.4c9.3-7.8 23-7.5 31.9 .9 12.3 11.6 23.3 24.4 33.9 37.4 13.5 16.5 29.7 38.3 45.3 64.2 5.2-6.8 10-12.8 14.2-17.9 1.1-1.3 2.2-2.7 3.3-4.1 7.9-9.8 17.7-22.1 30.8-22.1 13.4 0 22.8 11.9 30.8 22.1 1.3 1.7 2.6 3.3 3.9 4.8 10.3 12.4 24 30.3 37.7 52.4 27.2 43.9 55.6 106.4 55.6 176.6 0 123.7-100.3 224-224 224S0 411.7 0 288c0-91.1 41.1-170 80.5-225 19.9-27.7 39.7-49.9 54.6-65.1 8.2-8.4 16.5-16.7 25.5-24.2zM225.7 416c25.3 0 47.7-7 68.8-21 42.1-29.4 53.4-88.2 28.1-134.4-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5-17.3-22.1-49.1-62.4-65.3-83-5.4-6.9-15.2-8-21.5-1.9-18.3 17.8-51.5 56.8-51.5 104.3 0 68.6 50.6 109.2 113.7 109.2z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        
+          <div class="image-container">
+            <img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+              id="dispImg"
+              class="card-img"
+              alt="Image"
+              style="background: #ccc"
+              crossorigin="anonymous"
+            />
+          </div>
+          <!-- prettier-ignore -->
+          <div class="info-bar" id="dispInfo">NO. 777    身高: 1.7m    體重: 60.0kg</div>
+
+          <div class="moves-container" id="movesContainer">
+            <div class="move" id="move1Wrapper">
+              <div class="move-top-row">
+                <div class="move-cost" id="dispMove1Cost">
+                  <div class="cost-circle cost-fire">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="move-name-container">
+                  <span class="move-name" id="dispMove1Name">招式一</span>
+                </div>
+
+                <span class="move-damage" id="dispMove1Dmg">10</span>
+              </div>
+
+              <div class="move-desc" id="dispMove1Desc">招式描述一</div>
+            </div>
+
+            <div class="move" id="move2Wrapper">
+              <div class="move-top-row">
+                <div class="move-cost" id="dispMove2Cost">
+                  <div class="cost-circle cost-fire">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"/></svg>
+                    </svg>
+                  </div>
+                  <div class="cost-circle cost-fire">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"/></svg>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="move-name-container">
+                  <span class="move-name" id="dispMove2Name">招式二</span>
+                </div>
+
+                <span class="move-damage" id="dispMove2Dmg">20</span>
+              </div>
+              <!-- prettier-ignore -->
+              <div class="move-desc" id="dispMove2Desc">招式描述二</div>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <!-- prettier-ignore -->
+            <span id="dispFooter">本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用， 學習如何微調影像生成模型， 並親手打造一個卡牌製作網站。</span>
+          </div>
+        </div>
+      </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="action-btn btn-download" title="Save Card" onclick="downloadCard()">
+            Download
+          </button>
+          <button class="action-btn btn-share" title="Share Creation" onclick="shareCard()">
+            Share
+          </button>
+          <button class="action-btn btn-reset" title="Clear Altar" onclick="resetCard()">
+            Reset
+          </button>
+        </div>
+      </section>
+
+      <section class="panel editor-panel">
+        <div class="panel-title">編輯卡牌</div>
+        
+        <div class="form-group">
+        <label>屬性</label>
+        <select id="inputType">
+          <option value="lightning">雷 (Lightning)</option>
+          <option value="fire">火 (Fire)</option>
+          <option value="water">水 (Water)</option>
+          <option value="grass">草 (Grass)</option>
+          <option value="psychic">超能 (Psychic)</option>
+          <option value="fighting">格鬥 (Fighting)</option>
+          <option value="darkness">惡 (Darkness)</option>
+          <option value="metal">鋼 (Metal)</option>
+          <option value="dragon">龍 (Dragon)</option>
+          <option value="colorless" selected>一般 (Colorless)</option>
+        </select>
+      </div>
+
+        <div class="form-group">
+        <label>名稱</label>
+        <input type="text" id="inputName" value="角色名稱" />
+      </div>
+
+      <div class="form-group">
+        <label>HP</label>
+        <input
+          type="number"
+          id="inputHP"
+          value="60"
+          max="999"
+          min="0"
+          oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(Number(this.value) > 999) this.value = 999;"/>
+      </div>
+
+      
+
+      <div class="form-group">
+        <label>基本資料</label>
+        <div style="display: flex; gap: 10px; margin-bottom: 5px">
+          <div style="flex: 1">
+            <span style="font-size: 12px; color: #777">編號</span>
+            <input
+              type="text"
+              inputmode="decimal"
+              id="inputInfoNo"
+              value="777"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"/>
+          </div>
+          <div style="flex: 1">
+            <span style="font-size: 12px; color: #777">身高 (m)</span>
+            <input
+              type="text"
+              inputmode="decimal"
+              id="inputInfoHt"
+              value="1.7"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 15)"
+            />
+          </div>
+          <div style="flex: 1">
+            <span style="font-size: 12px; color: #777">體重 (kg)</span>
+            <input
+              type="text"
+              inputmode="decimal"
+              id="inputInfoWt"
+              value="60.0"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 15)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>上傳圖片（測試用，之後移除）</label>
+        <input type="file" id="inputImage" accept="image/*" />
+      </div>
+
+      <hr />
+      <div class="form-group">
+        <label>招式數量</label>
+        <div class="move-count-selector">
+          <button class="move-btn" id="btnMoveCount1" onclick="setMoveCount(1)">1</button>
+          <button class="move-btn active" id="btnMoveCount2" onclick="setMoveCount(2)">2</button>
+        </div>
+      </div>
+      <hr />
+
+      <div class="form-group">
+        <label>招式一能量</label>
+        <div class="energy-selector" id="m1EnergyControls"></div>
+        <button
+          class="btn-clear"
+          style="margin-top: 5px"
+          onclick="clearEnergy(1)"
+        >
+          Clear
+        </button>
+      </div>
+      <div class="form-group">
+        <label>招式一描述</label>
+        <div style="display: flex; gap: 10px">
+          <input
+            type="text"
+            id="inputMove1Name"
+            value="招式一"
+            placeholder=""
+          />
+          <input
+            type="text"
+            id="inputMove1Dmg"
+            value="10"
+            placeholder="傷害"
+            style="width: 80px"
+            inputmode="decimal"
+            oninput="this.value = this.value.replace(/[^0-9x+-]/g, '').slice(0, 3)"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <input
+          type="text"
+          id="inputMove1Desc"
+          value="招式描述一"
+          placeholder="招式描述"
+        />
+      </div>
+
+      <hr />
+
+      <div id="editorMove2Area">
+        <div class="form-group">
+          <label>招式二能量</label>
+          <div class="energy-selector" id="m2EnergyControls"></div>
+          <button
+            class="btn-clear"
+            style="margin-top: 5px"
+            onclick="clearEnergy(2)"
+          >
+            Clear
+          </button>
+        </div>
+        <div class="form-group">
+          <label>招式二描述</label>
+          <div style="display: flex; gap: 10px">
+            <input
+              type="text"
+              id="inputMove2Name"
+              value="招式二"
+              placeholder=""
+            />
+            <input
+              type="text"
+              id="inputMove2Dmg"
+              value="20"
+              placeholder="傷害"
+              style="width: 80px"
+              inputmode="decimal"
+              oninput="this.value = this.value.replace(/[^0-9x+-]/g, '').slice(0, 3)"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            id="inputMove2Desc"
+            value="招式描述二"
+            placeholder="招式描述"
+          />
+        </div>
+
+      </div>
+
+      <hr />
+
+
+      <div class="form-group">
+        <label>角色描述</label>
+        <textarea
+              type="text"
+              id="inputFooter"
+              style="height: 100px; resize: none;"
+            >本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用，學習如何微調影像生成模型，並親手打造一個卡牌製作網站。</textarea>
+      </div>
+      </section>
+    </div>
+
+    <div id="shareModal" class="modal-overlay">
+      <div class="modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <h2 class="panel-title">Scan to Share</h2>
+        <div id="qrcode"></div>
+        <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 10px;">
+          掃描 QR Code 查看你的專屬卡牌！
+        </p>
+        <a id="shareLink" href="#" target="_blank" style="color: var(--magic-cyan); font-size: 0.8rem;">Open Link</a>
+      </div>
+    </div>
+
+    <script>
+      // ================= 變數宣告 =================
+      let WEBSOCKET_URL = "";
+      let API_URL = "";
+      let ENDPOINT_NAME = "";
+      // =========================================
+
+      let lastShareState = null;
+      let lastShareUrl = null;
+
+      let socket;
+      let myConnectionId = null;
+      let isGenerating = false;
+
+      let currentMoveCount = 2;
+
+      const statusDiv = document.getElementById("status");
+      const spinner = document.getElementById("loading-spinner");
+      const btn = document.getElementById("btn");
+      const promptInput = document.getElementById("prompt");
+
+      const cardImageContainer = document.getElementById("main-card-image");
+
+      const wsInput = document.getElementById("ws-url-input");
+      const apiInput = document.getElementById("api-url-input");
+      const endpointInput = document.getElementById("endpoint-name-input");
+      const connectBtn = document.getElementById("connect-btn");
+      const configDetails = document.querySelector("details");
+
+      function resetCard() {
+
+        inputs.name.value = "角色名稱";
+        inputs.hp.value = "60";
+        inputs.infoNo.value = "777";
+        inputs.infoHt.value = "1.7";
+        inputs.infoWt.value = "60.0";
+        
+        inputs.m1Name.value = "招式一";
+        inputs.m1Dmg.value = "10";
+        inputs.m1Desc.value = "招式描述一";
+        
+        inputs.m2Name.value = "招式二";
+        inputs.m2Dmg.value = "20";
+        inputs.m2Desc.value = "招式描述二";
+        
+        inputs.footer.value = "本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用，學習如何微調影像生成模型，並親手打造一個卡牌製作網站。";
+
+
+        displays.name.innerHTML = inputs.name.value;
+        displays.hp.innerHTML = inputs.hp.value;
+        displays.m1Name.innerHTML = inputs.m1Name.value;
+        displays.m1Dmg.innerHTML = inputs.m1Dmg.value;
+        displays.m1Desc.innerHTML = inputs.m1Desc.value;
+        displays.m2Name.innerHTML = inputs.m2Name.value;
+        displays.m2Dmg.innerHTML = inputs.m2Dmg.value;
+        displays.m2Desc.innerHTML = inputs.m2Desc.value;
+        displays.footer.innerHTML = inputs.footer.value;
+        
+        updateInfoBar();
+
+        inputs.type.value = "colorless"; 
+        inputs.type.dispatchEvent(new Event("change"));
+
+        clearEnergy(1);
+        clearEnergy(2);
+        addEnergy(1, 'fire');
+        addEnergy(2, 'fire');
+        addEnergy(2, 'fire');
+
+        imgControls.scale.value = 1;
+        imgControls.posX.value = 50;
+        imgControls.posY.value = 50;
+        updateImageStyle();
+
+        setMoveCount(2);
+        updateMoveLayout();
+
+        inputs.img.value = ""; 
+        displays.img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+      }
+
+      function getCardState() {
+        return JSON.stringify({
+
+          name: inputs.name.value,
+          hp: inputs.hp.value,
+          type: inputs.type.value,
+          infoNo: inputs.infoNo.value,
+          infoHt: inputs.infoHt.value,
+          infoWt: inputs.infoWt.value,
+          m1Name: inputs.m1Name.value,
+          m1Dmg: inputs.m1Dmg.value,
+          m1Desc: inputs.m1Desc.value,
+          m2Name: inputs.m2Name.value,
+          m2Dmg: inputs.m2Dmg.value,
+          m2Desc: inputs.m2Desc.value,
+          footer: inputs.footer.value,
+          
+          imgSrc: displays.img.src,
+          imgStyle: displays.img.getAttribute('style'), 
+          
+          energy1: displays.m1Cost.innerHTML,
+          energy2: displays.m2Cost.innerHTML
+        });
+      }
+
+      const imgControls = {
+        scale: document.getElementById("img-scale"),
+        posX: document.getElementById("img-pos-x"),
+        posY: document.getElementById("img-pos-y"),
+        valScale: document.getElementById("val-scale"),
+        valX: document.getElementById("val-pos-x"),
+        valY: document.getElementById("val-pos-y")
+      };
+
+      function setMoveCount(count) {
+        currentMoveCount = count;
+        
+        document.getElementById('btnMoveCount1').classList.toggle('active', count === 1);
+        document.getElementById('btnMoveCount2').classList.toggle('active', count === 2);
+
+        updateMoveLayout();
+      }
+
+      function updateImageStyle() {
+        const scale = imgControls.scale.value;
+        const x = imgControls.posX.value;
+        const y = imgControls.posY.value;
+
+        imgControls.valScale.innerText = `${scale}x`;
+        imgControls.valX.innerText = `${x}%`;
+        imgControls.valY.innerText = `${y}%`;
+
+        displays.img.style.objectPosition = `${x}% ${y}%`;
+
+        displays.img.style.transformOrigin = `${x}% ${y}%`;
+        displays.img.style.transform = `scale(${scale})`;
+      }
+
+      imgControls.scale.addEventListener("input", updateImageStyle);
+      imgControls.posX.addEventListener("input", updateImageStyle);
+      imgControls.posY.addEventListener("input", updateImageStyle);
+
+      window.onload = () => {
+        const savedWs = localStorage.getItem("genai_ws_url");
+        const savedApi = localStorage.getItem("genai_api_url");
+        const savedEndpoint = localStorage.getItem("genai_endpoint_name");
+
+        if (savedWs) {
+          wsInput.value = savedWs;
+          WEBSOCKET_URL = savedWs;
+        }
+        if (savedApi) {
+          apiInput.value = savedApi;
+          API_URL = savedApi;
+        }
+        if (savedEndpoint) {
+          endpointInput.value = savedEndpoint;
+          ENDPOINT_NAME = savedEndpoint;
+        }
+
+        setStatus("尚未連線", null);
+        updateButtonState('disconnected');
+      };
+
+      function setStatus(msg, loading = false) {
+        statusDiv.innerText = msg;
+        if (loading) {
+          spinner.style.display = "block";
+          statusDiv.style.color = "var(--text-gold)";
+        } else {
+          spinner.style.display = "none";
+          statusDiv.style.color =
+            loading === null ? "#ef4444" : "var(--magic-cyan)";
+        }
+      }
+
+      function updateButtonState(state) {
+        btn.classList.remove('status-disconnected', 'status-ready', 'status-generating');
+        
+        switch(state) {
+          case 'disconnected':
+            btn.classList.add('status-disconnected');
+            btn.innerText = "Disconnected";
+            btn.disabled = true;
+            break;
+            
+          case 'ready':
+            btn.classList.add('status-ready');
+            btn.innerText = "✨ Generate Image";
+            btn.disabled = false;
+            break;
+            
+          case 'generating':
+            btn.classList.add('status-generating');
+            btn.innerText = "Generating...";
+            btn.disabled = true;
+            break;
+        }
+      }
+
+      function saveAndConnect() {
+        const wsVal = wsInput.value.trim();
+        const apiVal = apiInput.value.trim();
+        const endpointVal = endpointInput.value.trim();
+
+        if (!wsVal || !apiVal || !endpointVal) {
+          alert("Missing Configuration: Please check URLs and Endpoint Name.");
+          return;
+        }
+
+        WEBSOCKET_URL = wsVal;
+        API_URL = apiVal;
+        ENDPOINT_NAME = endpointVal;
+
+        localStorage.setItem("genai_ws_url", wsVal);
+        localStorage.setItem("genai_api_url", apiVal);
+        localStorage.setItem("genai_endpoint_name", endpointVal);
+
+        if (socket) {
+          socket.close();
+        }
+
+        connectBtn.disabled = true;
+        initWebSocket();
+      }
+
+      function initWebSocket() {
+        try {
+          socket = new WebSocket(WEBSOCKET_URL);
+        } catch (e) {
+          setStatus("連線失敗，請檢查 URL", null);
+          resetConnectBtn();
+          return;
+        }
+
+        socket.onopen = () => {
+          console.log("WebSocket connected");
+          resetConnectBtn();
+          setStatus("連線中...", true);
+          configDetails.removeAttribute("open");
+          socket.send(JSON.stringify({ action: "getId" }));
+        };
+
+        socket.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          console.log("Msg received:", data);
+
+          if (data.type === "connected") {
+            myConnectionId = data.connectionId;
+            setStatus(`設置成功`,false);
+            updateButtonState('ready');
+          }
+
+          if (data.type === "image_generated") {
+            handleImageGenerated(data.image_url);
+          }
+        };
+
+        socket.onclose = () => {
+          setStatus("WebSocket 失敗，請重新連線", null);
+          resetConnectBtn();
+          updateButtonState('disconnected');
+        };
+
+        socket.onerror = (err) => {
+          console.error("Socket Error", err);
+          setStatus("連線失敗", null);
+          resetConnectBtn();
+          updateButtonState('disconnected');
+        };
+      }
+
+      function resetConnectBtn() {
+        connectBtn.innerText = "Re-establish Link";
+        connectBtn.disabled = false;
+      }
+
+      async function fetchImageAsBase64(url) {
+        try {
+
+          const response = await fetch(url, { mode: 'cors', cache: 'no-cache' });
+          
+          if (!response.ok) throw new Error(`Fetch Image failed: ${response.status}`);
+          
+          const blob = await response.blob();
+          return await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(blob);
+          });
+        } catch (e) {
+          console.warn("CORS 轉換失敗:", e);
+          return url; 
+        }
+      }
+
+      async function handleImageGenerated(imageUrl) {
+        setStatus("召喚完成！", false);
+        updateButtonState('ready');
+        isGenerating = false;
+
+        const fixedUrl = imageUrl.replace("s3.amazonaws.com", "s3.us-west-2.amazonaws.com");
+        
+        console.log("Fixing URL redirect:", fixedUrl); 
+        
+        const base64Data = await fetchImageAsBase64(fixedUrl);
+
+
+        const cardImg = document.getElementById("dispImg");
+        if (cardImg) {
+          cardImg.src = base64Data;
+        }
+      }
+
+
+      async function generateImage() {
+        const prompt = promptInput.value;
+
+        if (!prompt || !myConnectionId || isGenerating || !ENDPOINT_NAME) {
+          if (!ENDPOINT_NAME) alert("Endpoint Name Missing");
+          return;
+        }
+
+        isGenerating = true;
+        setStatus("召喚中...", true);
+        updateButtonState('generating');
+
+        try {
+          const cleanApiUrl = API_URL.endsWith("/") ? API_URL : API_URL + "/";
+
+          const response = await fetch(`${cleanApiUrl}generate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              prompt: prompt,
+              connectionId: myConnectionId,
+              endpoint_name: ENDPOINT_NAME,
+            }),
+          });
+
+          if (response.status !== 200) {
+            const errText = await response.text();
+            throw new Error(`API Error (${response.status}): ${errText}`);
+          }
+        } catch (e) {
+          console.error(e);
+          setStatus("生成失敗：" + e.message, null);
+          updateButtonState('ready');
+          isGenerating = false;
+        }
+      }
+
+      const s3BaseUrl = "texture/";
+
+      async function loadGoogleFonts() {
+        const fonts = [
+          "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap",
+          "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap",
+          "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap",
+          "https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&display=swap"
+        ];
+
+        try {
+          const cssPromises = fonts.map(url => fetch(url).then(response => response.text()));
+          const cssContents = await Promise.all(cssPromises);
+
+          const style = document.createElement('style');
+          style.textContent = cssContents.join('\n');
+          document.head.appendChild(style);
+
+          await document.fonts.ready;
+          console.log("字型已成功內嵌並載入");
+          
+        } catch (error) {
+          console.error("字型載入失敗:", error);
+        }
+      }
+
+      loadGoogleFonts();
+
+      const inputs = {
+        name: document.getElementById("inputName"),
+        hp: document.getElementById("inputHP"),
+        type: document.getElementById("inputType"),
+        infoNo: document.getElementById("inputInfoNo"),
+        infoHt: document.getElementById("inputInfoHt"),
+        infoWt: document.getElementById("inputInfoWt"),
+        img: document.getElementById("inputImage"),
+        m1Name: document.getElementById("inputMove1Name"),
+        m1Dmg: document.getElementById("inputMove1Dmg"),
+        m1Desc: document.getElementById("inputMove1Desc"),
+        m2Name: document.getElementById("inputMove2Name"),
+        m2Dmg: document.getElementById("inputMove2Dmg"),
+        m2Desc: document.getElementById("inputMove2Desc"),
+        footer: document.getElementById("inputFooter"),
+      };
+
+      const displays = {
+        name: document.getElementById("dispName"),
+        hp: document.getElementById("dispHP"),
+        card: document.getElementById("cardCard"),
+        cardFrame: document.getElementById("cardFrame"),
+        typeIcon: document.getElementById("dispTypeIcon"),
+        info: document.getElementById("dispInfo"),
+        img: document.getElementById("dispImg"),
+        m1Name: document.getElementById("dispMove1Name"),
+        m1Dmg: document.getElementById("dispMove1Dmg"),
+        m1Desc: document.getElementById("dispMove1Desc"),
+        m1Cost: document.getElementById("dispMove1Cost"),
+        m2Name: document.getElementById("dispMove2Name"),
+        m2Dmg: document.getElementById("dispMove2Dmg"),
+        m2Desc: document.getElementById("dispMove2Desc"),
+        m2Cost: document.getElementById("dispMove2Cost"),
+        footer: document.getElementById("dispFooter"),
+      };
+
+      // 設定屬性資料
+      const typeData = {
+        lightning: {
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>',
+          css: "cost-lightning",
+          bg: "#f7b731",
+        },
+        fire: {
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"/></svg>',
+          css: "cost-fire",
+          bg: "#ff5e62",
+        },
+        water: {
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c0 0-8 8.5-8 13.5C4 20.2 7.6 23 12 23s8-2.8 8-7.5C20 10.5 12 2 12 2z"/></svg>',
+          css: "cost-water",
+          bg: "#2f80ed",
+        },
+        grass: {
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2.25-13 3.25C4 7.25 2 11.5 2 13.5c0 2 1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>',
+          css: "cost-grass",
+          bg: "#4cae50",
+        },
+        psychic: {
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 7.61 17 4.5 12 4.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>',
+          css: "cost-psychic",
+          bg: "#9b59b6",
+        },
+        fighting: {
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 406 547" fill="currentColor"><path d="M160 0c17.7 0 32 14.3 32 32l0 112-64 0 0-112c0-17.7 14.3-32 32-32zM32 64c0-17.7 14.3-32 32-32S96 46.3 96 64l0 80-64 0 0-80zm192 0c0-17.7 14.3-32 32-32s32 14.3 32 32l0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96zm96 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64zm-96 88l0-.6c9.4 5.4 20.3 8.6 32 8.6 13.2 0 25.4-4 35.6-10.8 8.7 24.9 32.5 42.8 60.4 42.8 11.7 0 22.6-3.1 32-8.6l0 8.6c0 52.3-25.1 98.8-64 128l0 96c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-78.4c-17.3-7.9-33.2-18.8-46.9-32.5L37.5 357.5C13.5 333.5 0 300.9 0 267l0-27c0-35.3 28.7-64 64-64l88 0c22.1 0 40 17.9 40 40s-17.9 40-40 40l-56 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l56 0c39.8 0 72-32.2 72-72z"/></svg>',
+          css: "cost-fighting",
+          bg: "#e67e22",
+        },
+        darkness: {
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9s9-4.03 9-9c0-.46-.04-.92-.1-1.36c-.98 1.37-2.58 2.26-4.4 2.26c-2.98 0-5.4-2.42-5.4-5.4c0-1.81.89-3.42 2.26-4.4C12.92 3.04 12.46 3 12 3z"/></svg>',
+          color: "var(--bg-darkness)",
+          css: "cost-darkness",
+          bg: "#2c3e50",
+        },
+        metal: {
+          icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.5.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>',
+          css: "cost-metal",
+          bg: "#95a5a6",
+        },
+        dragon: {
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 548" fill="currentColor" ><path d="M352 124.5l-51.9-13c-6.5-1.6-11.3-7.1-12-13.8s2.8-13.1 8.7-16.1l40.8-20.4-43.3-32.5c-5.5-4.1-7.8-11.3-5.6-17.9S297.1 0 304 0L464 0c30.2 0 58.7 14.2 76.8 38.4l57.6 76.8c6.2 8.3 9.6 18.4 9.6 28.8 0 26.5-21.5 48-48 48l-21.5 0c-17 0-33.3-6.7-45.3-18.7l-13.3-13.3-32 0 0 21.5c0 24.8 12.8 47.9 33.8 61.1l106.6 66.6c32.1 20.1 51.6 55.2 51.6 93.1 0 60.6-49.1 109.8-109.8 109.8L32.3 512c-3.3 0-6.6-.4-9.6-1.4-9.2-2.8-16.7-9.6-20.4-18.6-1.3-3.3-2.2-6.9-2.3-10.7-.2-3.7 .3-7.3 1.3-10.7 2.8-9.2 9.6-16.7 18.6-20.4 3-1.2 6.2-2 9.5-2.2L433.3 412c8.3-.7 14.7-7.7 14.7-16.1 0-4.3-1.7-8.4-4.7-11.4l-44.4-44.4c-30-30-46.9-70.7-46.9-113.1l0-102.5zM512 72.3c0-.1 0-.2 0-.3s0-.2 0-.3l0 .6zm-1.3 7.4L464.3 68.1c-.2 1.3-.3 2.6-.3 3.9 0 13.3 10.7 24 24 10.6 0 19.5-6.8 22.7-16.3zM130.9 116.5c16.3-14.5 40.4-16.2 58.5-4.1l130.6 87 0 27.5c0 32.8 8.4 64.8 24 93l-232 0c-6.7 0-12.7-4.2-15-10.4s-.5-13.3 4.6-17.7L171 232.3 18.4 255.8c-7 1.1-13.9-2.6-16.9-9S.1 232.8 5.4 228L130.9 116.5z"/></svg>',
+          css: "cost-dragon",
+          bg: "#e0a525",
+        },
+        colorless: {
+          icon: '<svg viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="8"/></svg>',
+          css: "cost-colorless",
+          bg: "#bdc3c7",
+        },
+      };
+
+      // --- 文字輸入連動 ---
+      function bindText(input, output) {
+        input.addEventListener("input", () => (output.innerHTML = input.value));
+      }
+      bindText(inputs.name, displays.name);
+      bindText(inputs.hp, displays.hp);
+      bindText(inputs.m1Name, displays.m1Name);
+      bindText(inputs.m1Dmg, displays.m1Dmg);
+      bindText(inputs.m1Desc, displays.m1Desc);
+      bindText(inputs.m2Name, displays.m2Name);
+      bindText(inputs.m2Dmg, displays.m2Dmg);
+      bindText(inputs.m2Desc, displays.m2Desc);
+      bindText(inputs.footer, displays.footer);
+
+      // --- 組合基本資料 ---
+      function updateInfoBar() {
+        const gap = "\u00A0\u00A0\u00A0\u00A0";
+        const text = `NO. ${inputs.infoNo.value}${gap}身高: ${inputs.infoHt.value}m${gap}體重: ${inputs.infoWt.value}kg`;
+        displays.info.innerHTML = text;
+      }
+
+      inputs.infoNo.addEventListener("input", updateInfoBar);
+      inputs.infoHt.addEventListener("input", updateInfoBar);
+      inputs.infoWt.addEventListener("input", updateInfoBar);
+
+      // 下載對應屬性的圖片 -> 轉 Base64 -> 設定 CSS
+      async function updateCardBackground(typeKey) {
+
+        const imageUrl = `${s3BaseUrl}texture-${typeKey}.png`;
+        
+        try {
+          const response = await fetch(imageUrl, { mode: 'cors' });
+          if (!response.ok) throw new Error("Image load failed");
+          
+          const blob = await response.blob();
+          const reader = new FileReader();
+          
+          reader.onloadend = function() {
+            const base64data = reader.result;
+
+            displays.cardFrame.style.backgroundImage = `url("${base64data}")`;
+            displays.cardFrame.style.backgroundBlendMode = "normal";
+          }
+          
+          reader.readAsDataURL(blob);
+          
+        } catch (error) {
+          console.error("背景載入失敗，嘗試直接使用 URL (下載功能可能會失效):", error);
+          displays.cardFrame.style.backgroundImage = `url("${imageUrl}")`;
+        }
+      }
+
+      inputs.type.addEventListener("change", () => {
+        const key = inputs.type.value;
+        const data = typeData[key];
+
+        displays.typeIcon.innerHTML = data.icon;
+        displays.typeIcon.style.background = data.bg;
+
+        updateCardBackground(key);
+
+        if (key === "darkness") {
+          displays.card.classList.add("is-darkness");
+        } else {
+          displays.card.classList.remove("is-darkness");
+        }
+      });
+
+      inputs.img.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (evt) => (displays.img.src = evt.target.result);
+          reader.readAsDataURL(file);
+        }
+      });
+
+      function createEnergyControls(containerId, moveIndex) {
+        const container = document.getElementById(containerId);
+        Object.keys(typeData).forEach((key) => {
+          const btn = document.createElement("button");
+          btn.className = "energy-btn";
+          btn.style.background = typeData[key].bg;
+          btn.innerHTML = typeData[key].icon;
+          btn.title = key;
+          btn.onclick = () => addEnergy(moveIndex, key);
+          container.appendChild(btn);
+        });
+      }
+
+      function addEnergy(moveIndex, typeKey) {
+        const targetContainer =
+          moveIndex === 1 ? displays.m1Cost : displays.m2Cost;
+        if (targetContainer.children.length >= 4) {
+          return;
+        }
+        const data = typeData[typeKey];
+        const circle = document.createElement("div");
+        circle.className = `cost-circle ${data.css}`;
+        circle.innerHTML = data.icon;
+        targetContainer.appendChild(circle);
+      }
+
+      function clearEnergy(moveIndex) {
+        const targetContainer =
+          moveIndex === 1 ? displays.m1Cost : displays.m2Cost;
+        targetContainer.innerHTML = "";
+      }
+
+      createEnergyControls("m1EnergyControls", 1);
+      createEnergyControls("m2EnergyControls", 2);
+
+      // 下載
+      async function downloadCard() {
+        await document.fonts.ready;
+        const card = document.getElementById("cardCard");
+        const width = card.offsetWidth;
+        const height = card.offsetHeight;
+
+        domtoimage.toPng(card, {
+          cacheBust: false,
+          scale: 3,
+          width: width,
+          height: height,
+          style: {
+            margin: '0',
+            boxShadow: "none",
+            transform: 'none'
+          }
+        }).then((dataUrl) => {
+          const link = document.createElement("a");
+          link.download = `${inputs.name.value}_card.png`;
+          link.href = dataUrl;
+          link.click();
+        }).catch(function (error) {
+            console.error('oops, something went wrong!', error);
+        });
+      }
+
+      // Share
+      async function shareCard() {
+        const btnShare = document.querySelector('.btn-share');
+        
+        const currentState = getCardState();
+        if (lastShareUrl && lastShareState === currentState) {
+          console.log("卡牌未變更，使用快取連結");
+          showModal(lastShareUrl);
+          return;
+        }
+
+        const originalText = btnShare.innerHTML;
+        
+        try {
+          btnShare.disabled = true;
+          btnShare.innerHTML = '<div class="spinner" style="display:inline-block; border-top-color:var(--magic-cyan)"></div> Generating...';
+
+          await document.fonts.ready;
+          
+          const card = document.getElementById("cardCard"); 
+
+          const width = card.offsetWidth;
+          const height = card.offsetHeight;
+          
+          const dataUrl = await domtoimage.toPng(card, {
+            cacheBust: false,
+            scale: 3,
+            width: width,
+            height: height,
+            style: { 
+              margin: '0', 
+              transform: 'none',
+              boxShadow: "none"
+            }
+          });
+
+          const cleanApiUrl = API_URL.endsWith("/") ? API_URL : API_URL + "/";
+          const response = await fetch(`${cleanApiUrl}share`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image_data: dataUrl }),
+          });
+
+          if (!response.ok) throw new Error("Upload failed");
+
+          const result = await response.json();
+          const shareUrl = result.url;
+
+          lastShareUrl = shareUrl;
+          lastShareState = currentState;
+
+          showModal(shareUrl);
+
+        } catch (error) {
+          console.error("Share failed:", error);
+          alert("分享失敗，請檢查連線或稍後再試。");
+        } finally {
+          btnShare.disabled = false;
+          btnShare.innerHTML = originalText;
+        }
+      }
+
+      function showModal(url) {
+        const modal = document.getElementById('shareModal');
+        const qrContainer = document.getElementById('qrcode');
+        const link = document.getElementById('shareLink');
+        
+        qrContainer.innerHTML = "";
+        
+        new QRCode(qrContainer, {
+          text: url,
+          width: 200,
+          height: 200,
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
+
+        link.href = url;
+        modal.style.display = 'flex';
+      }
+
+      function closeModal() {
+        document.getElementById('shareModal').style.display = 'none';
+      }
+
+      document.getElementById('shareModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+      });
+
+      inputs.type.dispatchEvent(new Event("change"));
+      updateInfoBar();
+      
+      const movesContainer = document.getElementById("movesContainer");
+      const move2Wrapper = document.getElementById("move2Wrapper");
+      const editorMove2Area = document.getElementById("editorMove2Area");
+
+      function updateMoveLayout() {
+        if (currentMoveCount === 1) {
+          move2Wrapper.style.display = "none";
+          editorMove2Area.style.display = "none";
+          movesContainer.classList.add("single-move-layout");
+        } else {
+          move2Wrapper.style.display = "flex";
+          editorMove2Area.style.display = "block";
+          movesContainer.classList.remove("single-move-layout");
+        }
+      }
+
+      updateMoveLayout();
+    </script>
+  </body>
+</html>
