@@ -178,7 +178,7 @@ Resources:
     Properties:
       ApiId: !Ref WebSocketApi
       IntegrationType: AWS_PROXY
-      IntegrationUri: !GetAtt DisconnectFunction.Arn
+      IntegrationUri: !GetAtt ConnectFunction.Arn
 
   GetIdIntegration:
     Type: AWS::ApiGatewayV2::Integration
@@ -218,6 +218,14 @@ Resources:
                   table.put_item(Item={'connectionId': connection_id})
                   return {'statusCode': 200}
               
+              elif route_key == '$disconnect':
+                  print(f"Disconnected: {connection_id}")
+                  try:
+                      table.delete_item(Key={'connectionId': connection_id})
+                  except Exception as e:
+                      print(f"Error deleting connection: {e}")
+                  return {'statusCode': 200}
+
               elif route_key == 'getId':
                   print(f"Client {connection_id} requesting ID")
                   domain = event['requestContext']['domainName']
@@ -236,26 +244,6 @@ Resources:
                       print(f"Error sending ID: {e}")
                       return {'statusCode': 500}
 
-              return {'statusCode': 200}
-
-  DisconnectFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      Runtime: python3.11
-      Handler: index.lambda_handler
-      Role: !GetAtt LambdaExecutionRole.Arn
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref ConnectionsTable
-      Code:
-        ZipFile: |
-          import boto3
-          import os
-          dynamodb = boto3.resource('dynamodb')
-          table = dynamodb.Table(os.environ['TABLE_NAME'])
-          def lambda_handler(event, context):
-              connection_id = event['requestContext']['connectionId']
-              table.delete_item(Key={'connectionId': connection_id})
               return {'statusCode': 200}
 
   GenerateFunction:
@@ -420,7 +408,7 @@ Resources:
           def lambda_handler(event, context):
               try:
                   body = json.loads(event.get('body', '{}'))
-                  image_data = body.get('image_data') # Base64 string
+                  image_data = body.get('image_data')
                   
                   if not image_data:
                       return {'statusCode': 400, 'body': 'Missing image_data'}
@@ -515,18 +503,11 @@ Resources:
   # 7. Triggers & Permissions
   # ==========================================================
 
-  ConfigLambdaPermission:
+  ConnectLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref ConnectFunction
-      Principal: apigateway.amazonaws.com
-
-  DisconnectLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref DisconnectFunction
       Principal: apigateway.amazonaws.com
 
   GenerateLambdaPermission:
