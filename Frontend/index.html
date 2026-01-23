@@ -680,6 +680,7 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         width: 100%;
       }
 
@@ -1298,10 +1299,6 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>上傳圖片（測試用，之後移除）</label>
-        <input type="file" id="inputImage" accept="image/*" />
-      </div>
 
       <hr />
       <div class="form-group">
@@ -1501,7 +1498,6 @@
         setMoveCount(2);
         updateMoveLayout();
 
-        inputs.img.value = ""; 
         displays.img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
       }
 
@@ -1651,6 +1647,7 @@
           
           setStatus("API URL 錯誤！", null);
           resetConnectBtn();
+          updateButtonState('disconnected');
           return;
         }
 
@@ -1686,6 +1683,7 @@
           
           setStatus("Endpoint 設定失敗！", null);
           resetConnectBtn();
+          updateButtonState('disconnected');
           return;
         }
 
@@ -1711,6 +1709,7 @@
         } catch (e) {
           setStatus("連線失敗，請檢查 URL", null);
           resetConnectBtn();
+          updateButtonState('disconnected');
           alert("設置失敗：WebSocket URL 錯誤，請檢查輸入內容。");
           return;
         }
@@ -1873,7 +1872,6 @@
         infoNo: document.getElementById("inputInfoNo"),
         infoHt: document.getElementById("inputInfoHt"),
         infoWt: document.getElementById("inputInfoWt"),
-        img: document.getElementById("inputImage"),
         m1Name: document.getElementById("inputMove1Name"),
         m1Dmg: document.getElementById("inputMove1Dmg"),
         m1Desc: document.getElementById("inputMove1Desc"),
@@ -2022,15 +2020,6 @@
           displays.card.classList.add("is-darkness");
         } else {
           displays.card.classList.remove("is-darkness");
-        }
-      });
-
-      inputs.img.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (evt) => (displays.img.src = evt.target.result);
-          reader.readAsDataURL(file);
         }
       });
 
