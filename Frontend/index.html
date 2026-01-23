@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
@@ -83,7 +83,7 @@
       /* ================= 主工作區 ================= */
       .workshop-container {
         display: grid;
-        grid-template-columns: 300px 1fr 300px; /* 左:圖片, 中:卡牌, 右:敘述 */
+        grid-template-columns: 300px 1fr 300px;
         gap: 20px;
         width: 100%;
         max-width: 1400px;
@@ -99,7 +99,6 @@
         }
       }
 
-      /* 通用面板樣式 */
       .panel {
         background-color: var(--bg-panel);
         border: 1px solid var(--border-gold-dim);
@@ -191,7 +190,7 @@
         font-size: 0.8rem;
         color: var(--text-gold);
         margin-bottom: 4px;
-        font-family: "Cinzel", "Noto Serif TC", serif; 
+        font-family: "Cinzel", "Noto Serif TC", serif;
         font-weight: 700;
       }
 
@@ -204,7 +203,9 @@
         border-radius: 4px;
         color: var(--text-parchment);
         font-family: "Noto Sans TC", sans-serif;
-        transition: border-color 0.3s, box-shadow 0.3s;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
       }
 
       .form-group input:focus,
@@ -214,7 +215,6 @@
         box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
       }
 
-      /* 通用按鈕樣式 */
       button {
         background: linear-gradient(135deg, #3b2d50, #2a1f3d);
         color: var(--text-gold);
@@ -250,7 +250,6 @@
       }
 
       #btn {
-        /* 基礎結構 */
         width: 100%;
         margin-top: 10px;
         font-size: 1.1rem;
@@ -303,9 +302,15 @@
       }
 
       @keyframes pulse-border {
-        0% { box-shadow: 0 0 10px rgba(0, 255, 242, 0.1); }
-        50% { box-shadow: 0 0 25px rgba(0, 255, 242, 0.4); }
-        100% { box-shadow: 0 0 10px rgba(0, 255, 242, 0.1); }
+        0% {
+          box-shadow: 0 0 10px rgba(0, 255, 242, 0.1);
+        }
+        50% {
+          box-shadow: 0 0 25px rgba(0, 255, 242, 0.4);
+        }
+        100% {
+          box-shadow: 0 0 10px rgba(0, 255, 242, 0.1);
+        }
       }
 
       textarea#prompt {
@@ -361,7 +366,7 @@
         color: white;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         transition: transform 0.1s;
-        line-height: 0;          
+        line-height: 0;
         font-size: 0;
         padding: 0;
         appearance: none;
@@ -385,7 +390,7 @@
         width: 70%;
         height: 70%;
         pointer-events: none;
-        filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+        filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
         display: block;
       }
 
@@ -393,7 +398,7 @@
         filter: none;
       }
 
-      input[type=range].slider {
+      input[type="range"].slider {
         -webkit-appearance: none;
         appearance: none;
         width: 100%;
@@ -404,7 +409,7 @@
         cursor: pointer;
       }
 
-      input[type=range].slider::-webkit-slider-runnable-track {
+      input[type="range"].slider::-webkit-slider-runnable-track {
         width: 100%;
         height: 4px;
         border-radius: 2px;
@@ -412,7 +417,7 @@
         cursor: pointer;
       }
 
-      input[type=range].slider::-webkit-slider-thumb {
+      input[type="range"].slider::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
         width: 10px;
@@ -420,17 +425,17 @@
         border-radius: 50%;
         background: var(--border-gold);
         box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
-        transition: .2s;
+        transition: 0.2s;
         margin-top: -3px;
       }
 
-      input[type=range].slider::-webkit-slider-thumb:hover {
+      input[type="range"].slider::-webkit-slider-thumb:hover {
         background: var(--magic-cyan);
         transform: scale(1.2);
       }
 
       /* ================= 中間：卡牌預覽區 ================= */
-      
+
       .card-preview-area {
         display: flex;
         justify-content: center;
@@ -456,13 +461,16 @@
           #909090 100%
         );
         padding: 12px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
+        box-shadow:
+          0 15px 35px rgba(0, 0, 0, 0.5),
           inset 0 0 0 1px rgba(255, 255, 255, 0.5),
           inset 0 0 15px rgba(0, 0, 0, 0.5);
         box-sizing: border-box;
         user-select: none;
         color: #2a2a2a;
-        font-family: "Noto Sans TC", "Segoe UI", "Chocolate Classical Sans", Tahoma, sans-serif;
+        font-family:
+          "Noto Sans TC", "Segoe UI", "Chocolate Classical Sans", Tahoma,
+          sans-serif;
       }
 
       .card-card::before {
@@ -488,7 +496,7 @@
         background: radial-gradient(
           ellipse at center,
           transparent 60%,
-          rgba(0,0,0,0.15) 100%
+          rgba(0, 0, 0, 0.15) 100%
         );
         pointer-events: none;
       }
@@ -503,7 +511,8 @@
       }
 
       .card-frame {
-        box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.2),
+        box-shadow:
+          inset 1px 1px 1px rgba(0, 0, 0, 0.2),
           0 0 0 1px rgba(0, 0, 0, 0.1);
         width: 100%;
         height: 100%;
@@ -584,7 +593,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.6),
+        box-shadow:
+          inset 1px 1px 2px rgba(0, 0, 0, 0.6),
           inset -1px -1px 3px rgba(255, 255, 255, 0.3);
         pointer-events: none;
         z-index: 3;
@@ -698,7 +708,7 @@
         height: 18px;
         border-radius: 50%;
         background: #ddd;
-        box-shadow: 
+        box-shadow:
           inset 2px 2px 2px rgba(255, 255, 255, 0.5),
           inset -2px -2px 4px rgba(0, 0, 0, 0.3),
           1px 2px 4px rgba(0, 0, 0, 0.5);
@@ -714,45 +724,94 @@
       }
 
       /* 能量漸層樣式 */
-      
       .cost-fire {
-        background: radial-gradient(circle at 65% 65%, #ff8e92, #ff5e62, #c0392b);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #ff8e92,
+          #ff5e62,
+          #c0392b
+        );
       }
 
       .cost-water {
-        background: radial-gradient(circle at 65% 65%, #56ccf2, #2f80ed, #0b486b);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #56ccf2,
+          #2f80ed,
+          #0b486b
+        );
       }
 
       .cost-grass {
-        background: radial-gradient(circle at 65% 65%, #88e08b, #4cae50, #1b5e20);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #88e08b,
+          #4cae50,
+          #1b5e20
+        );
       }
 
       .cost-lightning {
-        background: radial-gradient(circle at 65% 65%, #ffeaa7, #ffc342, #fbba13);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #ffeaa7,
+          #ffc342,
+          #fbba13
+        );
       }
 
       .cost-psychic {
-        background: radial-gradient(circle at 65% 65%, #d7bde2, #9b59b6, #5b2c6f);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #d7bde2,
+          #9b59b6,
+          #5b2c6f
+        );
       }
 
       .cost-fighting {
-        background: radial-gradient(circle at 65% 65%, #f5cba7, #e67e22, #873600);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #f5cba7,
+          #e67e22,
+          #873600
+        );
       }
 
       .cost-darkness {
-        background: radial-gradient(circle at 65% 65%, #566573, #2c3e50, #17202a);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #566573,
+          #2c3e50,
+          #17202a
+        );
       }
 
       .cost-metal {
-        background: radial-gradient(circle at 65% 65%, #d7dbdd, #95a5a6, #515a5a);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #d7dbdd,
+          #95a5a6,
+          #515a5a
+        );
       }
 
       .cost-dragon {
-        background: radial-gradient(circle at 65% 65%, #f4d03f, #e0a525, #7d6608);
+        background: radial-gradient(
+          circle at 65% 65%,
+          #f4d03f,
+          #e0a525,
+          #7d6608
+        );
       }
 
       .cost-colorless {
-        background: radial-gradient(circle at 35% 35%, #f0f3f4 0%, #ccd1d5 40%, #98a4a5 100%);
+        background: radial-gradient(
+          circle at 35% 35%,
+          #f0f3f4 0%,
+          #ccd1d5 40%,
+          #98a4a5 100%
+        );
       }
 
       .card-footer {
@@ -783,7 +842,6 @@
         }
       }
 
-      /* 功能按鈕群組 */
       .card-actions {
         display: flex;
         gap: 15px;
@@ -803,7 +861,6 @@
         background: rgba(0, 0, 0, 0.3);
       }
 
-      /* 下載按鈕 */
       .btn-download {
         border-color: var(--border-gold);
         color: var(--text-gold);
@@ -813,7 +870,6 @@
         box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
       }
 
-      /* 分享按鈕 */
       .btn-share {
         border-color: var(--magic-cyan);
         color: var(--magic-cyan);
@@ -870,7 +926,6 @@
         border-radius: 4px;
       }
 
-      /* 重置按鈕 */
       .btn-reset {
         border-color: var(--magic-red);
         color: var(--magic-red);
@@ -881,7 +936,7 @@
         text-shadow: 0 0 5px var(--magic-red);
       }
 
-      /* ================= 右側：卡牌數值編輯 ================= */
+      /* ================= 右側：卡牌編輯 ================= */
       .editor-field {
         margin-bottom: 15px;
       }
@@ -910,10 +965,10 @@
       }
 
       .editor-panel {
-        max-height: 550px; 
+        max-height: 550px;
         overflow-y: auto;
         overflow-x: hidden;
-        align-self: start; 
+        align-self: start;
       }
 
       .editor-panel::-webkit-scrollbar {
@@ -945,7 +1000,11 @@
       .move-btn {
         flex: 1;
         padding: 10px;
-        background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 0, 0, 0.4));
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.2),
+          rgba(0, 0, 0, 0.4)
+        );
         border-color: var(--border-gold);
         color: var(--text-gold);
         box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
@@ -982,7 +1041,7 @@
         background-color: rgba(0, 0, 0, 0.4);
         border: 1px solid var(--border-gold-dim);
         color: var(--text-gold);
-        
+
         font-family: "Cinzel", "Noto Serif TC", serif;
         font-size: 0.65rem;
         letter-spacing: 1px;
@@ -992,7 +1051,7 @@
         background-repeat: no-repeat;
         background-position: right 10px center;
         background-size: 24px;
-        
+
         transition: all 0.3s ease;
       }
 
@@ -1007,7 +1066,7 @@
         border-color: var(--magic-cyan);
         box-shadow: 0 0 15px rgba(0, 255, 242, 0.2);
         color: var(--magic-cyan);
-        
+
         background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300fff2'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
       }
 
@@ -1017,8 +1076,6 @@
         padding: 10px;
         font-family: sans-serif;
       }
-
-
     </style>
   </head>
   <body>
@@ -1068,9 +1125,8 @@
             <textarea
               id="prompt"
               placeholder="Describe the entity you wish to summon..."
-              style="resize: none;"
-            ></textarea
-            >
+              style="resize: none"
+            ></textarea>
           </div>
 
           <button id="btn" onclick="generateImage()" disabled>
@@ -1079,37 +1135,58 @@
 
           <div id="status-container">
             <div class="spinner" id="loading-spinner"></div>
-            <span id="status" style="color: var(--text-muted)"
-              >尚未連線</span
-            >
+            <span id="status" style="color: var(--text-muted)">尚未連線</span>
           </div>
-        
-          <br>
+
+          <br />
 
           <div class="form-group">
-            <label style="display:flex; justify-content:space-between;">
+            <label style="display: flex; justify-content: space-between">
               <span>圖片大小</span>
-              <span id="val-scale" style="color:var(--magic-gold)">1.0x</span>
+              <span id="val-scale" style="color: var(--magic-gold)">1.0x</span>
             </label>
-            <input type="range" id="img-scale" min="1" max="3" step="0.1" value="1" class="slider">
+            <input
+              type="range"
+              id="img-scale"
+              min="1"
+              max="3"
+              step="0.1"
+              value="1"
+              class="slider"
+            />
           </div>
 
           <div class="form-group">
-            <label style="display:flex; justify-content:space-between;">
+            <label style="display: flex; justify-content: space-between">
               <span>垂直位置 (Y)</span>
-              <span id="val-pos-y" style="color:var(--text-gold)">50%</span>
+              <span id="val-pos-y" style="color: var(--text-gold)">50%</span>
             </label>
-            <input type="range" id="img-pos-y" min="0" max="100" step="1" value="50" class="slider">
+            <input
+              type="range"
+              id="img-pos-y"
+              min="0"
+              max="100"
+              step="1"
+              value="50"
+              class="slider"
+            />
           </div>
 
           <div class="form-group">
-            <label style="display:flex; justify-content:space-between;">
+            <label style="display: flex; justify-content: space-between">
               <span>水平位置 (X)</span>
-              <span id="val-pos-x" style="color:var(--text-gold)">50%</span>
+              <span id="val-pos-x" style="color: var(--text-gold)">50%</span>
             </label>
-            <input type="range" id="img-pos-x" min="0" max="100" step="1" value="50" class="slider">
+            <input
+              type="range"
+              id="img-pos-x"
+              min="0"
+              max="100"
+              step="1"
+              value="50"
+              class="slider"
+            />
           </div>
-
         </div>
       </section>
 
@@ -1119,110 +1196,116 @@
       >
         <div class="card-preview-area">
           <div class="card-card" id="cardCard">
-        <div class="card-frame" id="cardFrame">
-          <div class="card-header">
-            <div class="name" id="dispName">角色名稱</div>
-            <div class="hp-group">
-              <span class="hp-text">HP</span>
-              <span class="hp-value" id="dispHP">60</span>
-              <div class="type-icon" id="dispTypeIcon">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M160.5-26.4c9.3-7.8 23-7.5 31.9 .9 12.3 11.6 23.3 24.4 33.9 37.4 13.5 16.5 29.7 38.3 45.3 64.2 5.2-6.8 10-12.8 14.2-17.9 1.1-1.3 2.2-2.7 3.3-4.1 7.9-9.8 17.7-22.1 30.8-22.1 13.4 0 22.8 11.9 30.8 22.1 1.3 1.7 2.6 3.3 3.9 4.8 10.3 12.4 24 30.3 37.7 52.4 27.2 43.9 55.6 106.4 55.6 176.6 0 123.7-100.3 224-224 224S0 411.7 0 288c0-91.1 41.1-170 80.5-225 19.9-27.7 39.7-49.9 54.6-65.1 8.2-8.4 16.5-16.7 25.5-24.2zM225.7 416c25.3 0 47.7-7 68.8-21 42.1-29.4 53.4-88.2 28.1-134.4-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5-17.3-22.1-49.1-62.4-65.3-83-5.4-6.9-15.2-8-21.5-1.9-18.3 17.8-51.5 56.8-51.5 104.3 0 68.6 50.6 109.2 113.7 109.2z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        
-          <div class="image-container">
-            <img
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-              id="dispImg"
-              class="card-img"
-              alt="Image"
-              style="background: #ccc"
-              crossorigin="anonymous"
-            />
-          </div>
-          <!-- prettier-ignore -->
-          <div class="info-bar" id="dispInfo">NO. 777    身高: 1.7m    體重: 60.0kg</div>
-
-          <div class="moves-container" id="movesContainer">
-            <div class="move" id="move1Wrapper">
-              <div class="move-top-row">
-                <div class="move-cost" id="dispMove1Cost">
-                  <div class="cost-circle cost-fire">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
+            <div class="card-frame" id="cardFrame">
+              <div class="card-header">
+                <div class="name" id="dispName">角色名稱</div>
+                <div class="hp-group">
+                  <span class="hp-text">HP</span>
+                  <span class="hp-value" id="dispHP">60</span>
+                  <div class="type-icon" id="dispTypeIcon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
                       <path
-                        d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"/>
+                        d="M160.5-26.4c9.3-7.8 23-7.5 31.9 .9 12.3 11.6 23.3 24.4 33.9 37.4 13.5 16.5 29.7 38.3 45.3 64.2 5.2-6.8 10-12.8 14.2-17.9 1.1-1.3 2.2-2.7 3.3-4.1 7.9-9.8 17.7-22.1 30.8-22.1 13.4 0 22.8 11.9 30.8 22.1 1.3 1.7 2.6 3.3 3.9 4.8 10.3 12.4 24 30.3 37.7 52.4 27.2 43.9 55.6 106.4 55.6 176.6 0 123.7-100.3 224-224 224S0 411.7 0 288c0-91.1 41.1-170 80.5-225 19.9-27.7 39.7-49.9 54.6-65.1 8.2-8.4 16.5-16.7 25.5-24.2zM225.7 416c25.3 0 47.7-7 68.8-21 42.1-29.4 53.4-88.2 28.1-134.4-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5-17.3-22.1-49.1-62.4-65.3-83-5.4-6.9-15.2-8-21.5-1.9-18.3 17.8-51.5 56.8-51.5 104.3 0 68.6 50.6 109.2 113.7 109.2z"
+                      />
                     </svg>
                   </div>
                 </div>
-
-                <div class="move-name-container">
-                  <span class="move-name" id="dispMove1Name">招式一</span>
-                </div>
-
-                <span class="move-damage" id="dispMove1Dmg">10</span>
               </div>
 
-              <div class="move-desc" id="dispMove1Desc">招式描述一</div>
-            </div>
-
-            <div class="move" id="move2Wrapper">
-              <div class="move-top-row">
-                <div class="move-cost" id="dispMove2Cost">
-                  <div class="cost-circle cost-fire">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path
-                        d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"/></svg>
-                    </svg>
-                  </div>
-                  <div class="cost-circle cost-fire">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path
-                        d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"/></svg>
-                    </svg>
-                  </div>
-                </div>
-
-                <div class="move-name-container">
-                  <span class="move-name" id="dispMove2Name">招式二</span>
-                </div>
-
-                <span class="move-damage" id="dispMove2Dmg">20</span>
+              <div class="image-container">
+                <img
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                  id="dispImg"
+                  class="card-img"
+                  alt="Image"
+                  style="background: #ccc"
+                  crossorigin="anonymous"
+                />
               </div>
               <!-- prettier-ignore -->
-              <div class="move-desc" id="dispMove2Desc">招式描述二</div>
+              <div class="info-bar" id="dispInfo">NO. 777    身高: 1.7m    體重: 60.0kg</div>
+
+              <div class="moves-container" id="movesContainer">
+                <div class="move" id="move1Wrapper">
+                  <div class="move-top-row">
+                    <div class="move-cost" id="dispMove1Cost">
+                      <div class="cost-circle cost-fire">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path
+                            d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="move-name-container">
+                      <span class="move-name" id="dispMove1Name">招式一</span>
+                    </div>
+
+                    <span class="move-damage" id="dispMove1Dmg">10</span>
+                  </div>
+
+                  <div class="move-desc" id="dispMove1Desc">招式描述一</div>
+                </div>
+
+                <div class="move" id="move2Wrapper">
+                  <div class="move-top-row">
+                    <div class="move-cost" id="dispMove2Cost">
+                      <div class="cost-circle cost-fire">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path
+                            d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"
+                          />
+                        </svg>
+                      </div>
+                      <div class="cost-circle cost-fire">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path
+                            d="M12,22c4.97,0,9-4.03,9-9c0-4.97-9-13-9-13S3,8.03,3,13C3,17.97,7.03,22,12,22z M10.8,9.9c0,0,3.3,4.4,1.8,7.6c0,0,2.1-1.6,2.1-4c0,0,1.1,1.1,0.5,3.6c2.4-1.4,2.5-4.4,2.5-4.4C19.6,15.6,16.5,20,12,20c-4.4,0-6.9-3.7-6.9-6.9C5.1,10.6,10.8,9.9,10.8,9.9z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="move-name-container">
+                      <span class="move-name" id="dispMove2Name">招式二</span>
+                    </div>
+
+                    <span class="move-damage" id="dispMove2Dmg">20</span>
+                  </div>
+                  <!-- prettier-ignore -->
+                  <div class="move-desc" id="dispMove2Desc">招式描述二</div>
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <!-- prettier-ignore -->
+                <span id="dispFooter">本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用， 學習如何微調影像生成模型， 並親手打造一個卡牌製作網站。</span>
+              </div>
             </div>
           </div>
-
-          <div class="card-footer">
-            <!-- prettier-ignore -->
-            <span id="dispFooter">本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用， 學習如何微調影像生成模型， 並親手打造一個卡牌製作網站。</span>
-          </div>
-        </div>
-      </div>
         </div>
 
         <div class="card-actions">
-          <button class="action-btn btn-download" title="Save Card" onclick="downloadCard()">
+          <button
+            class="action-btn btn-download"
+            title="Save Card"
+            onclick="downloadCard()"
+          >
             Download
           </button>
-          <button class="action-btn btn-share" title="Share Creation" onclick="shareCard()">
+          <button
+            class="action-btn btn-share"
+            title="Share Creation"
+            onclick="shareCard()"
+          >
             Share
           </button>
-          <button class="action-btn btn-reset" title="Clear Altar" onclick="resetCard()">
+          <button
+            class="action-btn btn-reset"
+            title="Clear Altar"
+            onclick="resetCard()"
+          >
             Reset
           </button>
         </div>
@@ -1230,182 +1313,207 @@
 
       <section class="panel editor-panel">
         <div class="panel-title">編輯卡牌</div>
-        
-        <div class="form-group">
-        <label>屬性</label>
-        <select id="inputType">
-          <option value="lightning">雷 (Lightning)</option>
-          <option value="fire">火 (Fire)</option>
-          <option value="water">水 (Water)</option>
-          <option value="grass">草 (Grass)</option>
-          <option value="psychic">超能 (Psychic)</option>
-          <option value="fighting">格鬥 (Fighting)</option>
-          <option value="darkness">惡 (Darkness)</option>
-          <option value="metal">鋼 (Metal)</option>
-          <option value="dragon">龍 (Dragon)</option>
-          <option value="colorless" selected>一般 (Colorless)</option>
-        </select>
-      </div>
 
         <div class="form-group">
-        <label>名稱</label>
-        <input type="text" id="inputName" value="角色名稱" />
-      </div>
-
-      <div class="form-group">
-        <label>HP</label>
-        <input
-          type="number"
-          id="inputHP"
-          value="60"
-          max="999"
-          min="0"
-          oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(Number(this.value) > 999) this.value = 999;"/>
-      </div>
-
-      
-
-      <div class="form-group">
-        <label>基本資料</label>
-        <div style="display: flex; gap: 10px; margin-bottom: 5px">
-          <div style="flex: 1">
-            <span style="font-size: 12px; color: #777">編號</span>
-            <input
-              type="text"
-              inputmode="decimal"
-              id="inputInfoNo"
-              value="777"
-              oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"/>
-          </div>
-          <div style="flex: 1">
-            <span style="font-size: 12px; color: #777">身高 (m)</span>
-            <input
-              type="text"
-              inputmode="decimal"
-              id="inputInfoHt"
-              value="1.7"
-              oninput="this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 15)"
-            />
-          </div>
-          <div style="flex: 1">
-            <span style="font-size: 12px; color: #777">體重 (kg)</span>
-            <input
-              type="text"
-              inputmode="decimal"
-              id="inputInfoWt"
-              value="60.0"
-              oninput="this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 15)"
-            />
-          </div>
+          <label>屬性</label>
+          <select id="inputType">
+            <option value="lightning">雷 (Lightning)</option>
+            <option value="fire">火 (Fire)</option>
+            <option value="water">水 (Water)</option>
+            <option value="grass">草 (Grass)</option>
+            <option value="psychic">超能 (Psychic)</option>
+            <option value="fighting">格鬥 (Fighting)</option>
+            <option value="darkness">惡 (Darkness)</option>
+            <option value="metal">鋼 (Metal)</option>
+            <option value="dragon">龍 (Dragon)</option>
+            <option value="colorless" selected>一般 (Colorless)</option>
+          </select>
         </div>
-      </div>
 
-      <hr />
-      <div class="form-group">
-        <label>招式數量</label>
-        <div class="move-count-selector">
-          <button class="move-btn" id="btnMoveCount1" onclick="setMoveCount(1)">1</button>
-          <button class="move-btn active" id="btnMoveCount2" onclick="setMoveCount(2)">2</button>
+        <div class="form-group">
+          <label>名稱</label>
+          <input type="text" id="inputName" value="角色名稱" />
         </div>
-      </div>
-      <hr />
 
-      <div class="form-group">
-        <label>招式一能量</label>
-        <div class="energy-selector" id="m1EnergyControls"></div>
-        <button
-          class="btn-clear"
-          style="margin-top: 5px"
-          onclick="clearEnergy(1)"
-        >
-          Clear
-        </button>
-      </div>
-      <div class="form-group">
-        <label>招式一描述</label>
-        <div style="display: flex; gap: 10px">
+        <div class="form-group">
+          <label>HP</label>
           <input
-            type="text"
-            id="inputMove1Name"
-            value="招式一"
-            placeholder=""
-          />
-          <input
-            type="text"
-            id="inputMove1Dmg"
-            value="10"
-            placeholder="傷害"
-            style="width: 80px"
-            inputmode="decimal"
-            oninput="this.value = this.value.replace(/[^0-9x+-]/g, '').slice(0, 3)"
+            type="number"
+            id="inputHP"
+            value="60"
+            max="999"
+            min="0"
+            oninput="
+              this.value = this.value.replace(/[^0-9]/g, '');
+              if (Number(this.value) > 999) this.value = 999;
+            "
           />
         </div>
-      </div>
-      <div class="form-group">
-        <input
-          type="text"
-          id="inputMove1Desc"
-          value="招式描述一"
-          placeholder="招式描述"
-        />
-      </div>
 
-      <hr />
-
-      <div id="editorMove2Area">
         <div class="form-group">
-          <label>招式二能量</label>
-          <div class="energy-selector" id="m2EnergyControls"></div>
+          <label>基本資料</label>
+          <div style="display: flex; gap: 10px; margin-bottom: 5px">
+            <div style="flex: 1">
+              <span style="font-size: 12px; color: #777">編號</span>
+              <input
+                type="text"
+                inputmode="decimal"
+                id="inputInfoNo"
+                value="777"
+                oninput="
+                  this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)
+                "
+              />
+            </div>
+            <div style="flex: 1">
+              <span style="font-size: 12px; color: #777">身高 (m)</span>
+              <input
+                type="text"
+                inputmode="decimal"
+                id="inputInfoHt"
+                value="1.7"
+                oninput="
+                  this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 15)
+                "
+              />
+            </div>
+            <div style="flex: 1">
+              <span style="font-size: 12px; color: #777">體重 (kg)</span>
+              <input
+                type="text"
+                inputmode="decimal"
+                id="inputInfoWt"
+                value="60.0"
+                oninput="
+                  this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 15)
+                "
+              />
+            </div>
+          </div>
+        </div>
+
+        <hr />
+        <div class="form-group">
+          <label>招式數量</label>
+          <div class="move-count-selector">
+            <button
+              class="move-btn"
+              id="btnMoveCount1"
+              onclick="setMoveCount(1)"
+            >
+              1
+            </button>
+            <button
+              class="move-btn active"
+              id="btnMoveCount2"
+              onclick="setMoveCount(2)"
+            >
+              2
+            </button>
+          </div>
+        </div>
+        <hr />
+
+        <div class="form-group">
+          <label>招式一能量</label>
+          <div class="energy-selector" id="m1EnergyControls"></div>
           <button
             class="btn-clear"
             style="margin-top: 5px"
-            onclick="clearEnergy(2)"
+            onclick="clearEnergy(1)"
           >
             Clear
           </button>
         </div>
         <div class="form-group">
-          <label>招式二描述</label>
+          <label>招式一描述</label>
           <div style="display: flex; gap: 10px">
             <input
               type="text"
-              id="inputMove2Name"
-              value="招式二"
+              id="inputMove1Name"
+              value="招式一"
               placeholder=""
             />
             <input
               type="text"
-              id="inputMove2Dmg"
-              value="20"
+              id="inputMove1Dmg"
+              value="10"
               placeholder="傷害"
               style="width: 80px"
               inputmode="decimal"
-              oninput="this.value = this.value.replace(/[^0-9x+-]/g, '').slice(0, 3)"
+              oninput="
+                this.value = this.value.replace(/[^0-9x+-]/g, '').slice(0, 3)
+              "
             />
           </div>
         </div>
         <div class="form-group">
           <input
             type="text"
-            id="inputMove2Desc"
-            value="招式描述二"
+            id="inputMove1Desc"
+            value="招式描述一"
             placeholder="招式描述"
           />
         </div>
 
-      </div>
+        <hr />
 
-      <hr />
-
-
-      <div class="form-group">
-        <label>角色描述</label>
-        <textarea
+        <div id="editorMove2Area">
+          <div class="form-group">
+            <label>招式二能量</label>
+            <div class="energy-selector" id="m2EnergyControls"></div>
+            <button
+              class="btn-clear"
+              style="margin-top: 5px"
+              onclick="clearEnergy(2)"
+            >
+              Clear
+            </button>
+          </div>
+          <div class="form-group">
+            <label>招式二描述</label>
+            <div style="display: flex; gap: 10px">
+              <input
+                type="text"
+                id="inputMove2Name"
+                value="招式二"
+                placeholder=""
+              />
+              <input
+                type="text"
+                id="inputMove2Dmg"
+                value="20"
+                placeholder="傷害"
+                style="width: 80px"
+                inputmode="decimal"
+                oninput="
+                  this.value = this.value.replace(/[^0-9x+-]/g, '').slice(0, 3)
+                "
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <input
               type="text"
-              id="inputFooter"
-              style="height: 100px; resize: none;"
-            >本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用，學習如何微調影像生成模型，並親手打造一個卡牌製作網站。</textarea>
-      </div>
+              id="inputMove2Desc"
+              value="招式描述二"
+              placeholder="招式描述"
+            />
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="form-group">
+          <label>角色描述</label>
+          <textarea
+            type="text"
+            id="inputFooter"
+            style="height: 100px; resize: none"
+          >
+本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用，學習如何微調影像生成模型，並親手打造一個卡牌製作網站。</textarea
+          >
+        </div>
       </section>
     </div>
 
@@ -1414,19 +1522,27 @@
         <span class="modal-close" onclick="closeModal()">&times;</span>
         <h2 class="panel-title">Scan to Share</h2>
         <div id="qrcode"></div>
-        <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 10px;">
+        <p
+          style="color: var(--text-muted); font-size: 0.8rem; margin-top: 10px"
+        >
           掃描 QR Code 查看你的專屬卡牌！
         </p>
-        <a id="shareLink" href="#" target="_blank" style="color: var(--magic-cyan); font-size: 0.8rem;">Open Link</a>
+        <a
+          id="shareLink"
+          href="#"
+          target="_blank"
+          style="color: var(--magic-cyan); font-size: 0.8rem"
+          >Open Link</a
+        >
       </div>
     </div>
 
     <script>
-      // ================= 變數宣告 =================
+      // ================= 全域變數與狀態 =================
+
       let WEBSOCKET_URL = "";
       let API_URL = "";
       let ENDPOINT_NAME = "";
-      // =========================================
 
       let lastShareState = null;
       let lastShareUrl = null;
@@ -1442,89 +1558,17 @@
       const btn = document.getElementById("btn");
       const promptInput = document.getElementById("prompt");
 
-      const cardImageContainer = document.getElementById("main-card-image");
-
       const wsInput = document.getElementById("ws-url-input");
       const apiInput = document.getElementById("api-url-input");
       const endpointInput = document.getElementById("endpoint-name-input");
       const connectBtn = document.getElementById("connect-btn");
       const configDetails = document.querySelector("details");
 
-      function resetCard() {
+      const movesContainer = document.getElementById("movesContainer");
+      const move2Wrapper = document.getElementById("move2Wrapper");
+      const editorMove2Area = document.getElementById("editorMove2Area");
 
-        inputs.name.value = "角色名稱";
-        inputs.hp.value = "60";
-        inputs.infoNo.value = "777";
-        inputs.infoHt.value = "1.7";
-        inputs.infoWt.value = "60.0";
-        
-        inputs.m1Name.value = "招式一";
-        inputs.m1Dmg.value = "10";
-        inputs.m1Desc.value = "招式描述一";
-        
-        inputs.m2Name.value = "招式二";
-        inputs.m2Dmg.value = "20";
-        inputs.m2Desc.value = "招式描述二";
-        
-        inputs.footer.value = "本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用，學習如何微調影像生成模型，並親手打造一個卡牌製作網站。";
-
-
-        displays.name.innerHTML = inputs.name.value;
-        displays.hp.innerHTML = inputs.hp.value;
-        displays.m1Name.innerHTML = inputs.m1Name.value;
-        displays.m1Dmg.innerHTML = inputs.m1Dmg.value;
-        displays.m1Desc.innerHTML = inputs.m1Desc.value;
-        displays.m2Name.innerHTML = inputs.m2Name.value;
-        displays.m2Dmg.innerHTML = inputs.m2Dmg.value;
-        displays.m2Desc.innerHTML = inputs.m2Desc.value;
-        displays.footer.innerHTML = inputs.footer.value;
-        
-        updateInfoBar();
-
-        inputs.type.value = "colorless"; 
-        inputs.type.dispatchEvent(new Event("change"));
-
-        clearEnergy(1);
-        clearEnergy(2);
-        addEnergy(1, 'fire');
-        addEnergy(2, 'fire');
-        addEnergy(2, 'fire');
-
-        imgControls.scale.value = 1;
-        imgControls.posX.value = 50;
-        imgControls.posY.value = 50;
-        updateImageStyle();
-
-        setMoveCount(2);
-        updateMoveLayout();
-
-        displays.img.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-      }
-
-      function getCardState() {
-        return JSON.stringify({
-
-          name: inputs.name.value,
-          hp: inputs.hp.value,
-          type: inputs.type.value,
-          infoNo: inputs.infoNo.value,
-          infoHt: inputs.infoHt.value,
-          infoWt: inputs.infoWt.value,
-          m1Name: inputs.m1Name.value,
-          m1Dmg: inputs.m1Dmg.value,
-          m1Desc: inputs.m1Desc.value,
-          m2Name: inputs.m2Name.value,
-          m2Dmg: inputs.m2Dmg.value,
-          m2Desc: inputs.m2Desc.value,
-          footer: inputs.footer.value,
-          
-          imgSrc: displays.img.src,
-          imgStyle: displays.img.getAttribute('style'), 
-          
-          energy1: displays.m1Cost.innerHTML,
-          energy2: displays.m2Cost.innerHTML
-        });
-      }
+      const s3BaseUrl = "texture/";
 
       const imgControls = {
         scale: document.getElementById("img-scale"),
@@ -1532,338 +1576,8 @@
         posY: document.getElementById("img-pos-y"),
         valScale: document.getElementById("val-scale"),
         valX: document.getElementById("val-pos-x"),
-        valY: document.getElementById("val-pos-y")
+        valY: document.getElementById("val-pos-y"),
       };
-
-      function setMoveCount(count) {
-        currentMoveCount = count;
-        
-        document.getElementById('btnMoveCount1').classList.toggle('active', count === 1);
-        document.getElementById('btnMoveCount2').classList.toggle('active', count === 2);
-
-        updateMoveLayout();
-      }
-
-      function updateImageStyle() {
-        const scale = imgControls.scale.value;
-        const x = imgControls.posX.value;
-        const y = imgControls.posY.value;
-
-        imgControls.valScale.innerText = `${scale}x`;
-        imgControls.valX.innerText = `${x}%`;
-        imgControls.valY.innerText = `${y}%`;
-
-        displays.img.style.objectPosition = `${x}% ${y}%`;
-
-        displays.img.style.transformOrigin = `${x}% ${y}%`;
-        displays.img.style.transform = `scale(${scale})`;
-      }
-
-      imgControls.scale.addEventListener("input", updateImageStyle);
-      imgControls.posX.addEventListener("input", updateImageStyle);
-      imgControls.posY.addEventListener("input", updateImageStyle);
-
-      window.onload = () => {
-        const savedWs = localStorage.getItem("genai_ws_url");
-        const savedApi = localStorage.getItem("genai_api_url");
-        const savedEndpoint = localStorage.getItem("genai_endpoint_name");
-
-        if (savedWs) {
-          wsInput.value = savedWs;
-          WEBSOCKET_URL = savedWs;
-        }
-        if (savedApi) {
-          apiInput.value = savedApi;
-          API_URL = savedApi;
-        }
-        if (savedEndpoint) {
-          endpointInput.value = savedEndpoint;
-          ENDPOINT_NAME = savedEndpoint;
-        }
-
-        setStatus("尚未連線", null);
-        updateButtonState('disconnected');
-      };
-
-      function setStatus(msg, loading = false) {
-        statusDiv.innerText = msg;
-        if (loading) {
-          spinner.style.display = "block";
-          statusDiv.style.color = "var(--text-gold)";
-        } else {
-          spinner.style.display = "none";
-          statusDiv.style.color =
-            loading === null ? "#ef4444" : "var(--magic-cyan)";
-        }
-      }
-
-      function updateButtonState(state) {
-        btn.classList.remove('status-disconnected', 'status-ready', 'status-generating');
-        
-        switch(state) {
-          case 'disconnected':
-            btn.classList.add('status-disconnected');
-            btn.innerText = "Disconnected";
-            btn.disabled = true;
-            break;
-            
-          case 'ready':
-            btn.classList.add('status-ready');
-            btn.innerText = "✨ Generate Image";
-            btn.disabled = false;
-            break;
-            
-          case 'generating':
-            btn.classList.add('status-generating');
-            btn.innerText = "Generating...";
-            btn.disabled = true;
-            break;
-        }
-      }
-
-      async function saveAndConnect() {
-        const wsVal = wsInput.value.trim();
-        const apiVal = apiInput.value.trim();
-        const endpointVal = endpointInput.value.trim();
-
-        if (!wsVal || !apiVal || !endpointVal) {
-          alert("請輸入完整設置！");
-          return;
-        }
-
-        connectBtn.disabled = true;
-        connectBtn.innerText = "Checking API...";
-        setStatus("檢查 API 連線中...", true);
-
-        const cleanApiUrl = apiVal.endsWith("/") ? apiVal : apiVal + "/";
-
-        try {
-          
-          await fetch(cleanApiUrl, { method: 'GET', mode: 'no-cors' });
-          
-        } catch (e) {
-          console.error("API Validation Error:", e);
-          alert("API URL 設定錯誤！無法連線至該網址。");
-          
-          setStatus("API URL 錯誤！", null);
-          resetConnectBtn();
-          updateButtonState('disconnected');
-          return;
-        }
-
-        connectBtn.disabled = true;
-        connectBtn.innerText = "Verifying Endpoint...";
-        setStatus("檢查 Endpoint 狀態中...", true);
-
-        try {
-          const checkUrl = `${cleanApiUrl}generate?endpoint_name=${encodeURIComponent(endpointVal)}&t=${Date.now()}`;
-          
-          const response = await fetch(checkUrl, { 
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-          });
-          
-          if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            throw new Error(errData.message || `Endpoint Error: ${response.status}`);
-          }
-
-          const data = await response.json();
-          console.log("Endpoint Status:", data);
-          
-        } catch (e) {
-          console.error("Setup Error:", e);
-          if (e.message.includes("404") || e.message.includes("not found")) {
-             alert(`找不到 Endpoint: "${endpointVal}" 請確認名稱是否正確`);
-          } else {
-             alert(`Endpoint 設置錯誤：\n${e.message}`);
-          }
-          
-          setStatus("Endpoint 設定失敗！", null);
-          resetConnectBtn();
-          updateButtonState('disconnected');
-          return;
-        }
-
-        WEBSOCKET_URL = wsVal;
-        API_URL = apiVal;
-        ENDPOINT_NAME = endpointVal;
-
-        localStorage.setItem("genai_ws_url", wsVal);
-        localStorage.setItem("genai_api_url", apiVal);
-        localStorage.setItem("genai_endpoint_name", endpointVal);
-
-        if (socket) {
-          socket.close();
-        }
-
-        connectBtn.disabled = true;
-        initWebSocket();
-      }
-
-      function initWebSocket() {
-        try {
-          socket = new WebSocket(WEBSOCKET_URL);
-        } catch (e) {
-          setStatus("連線失敗，請檢查 URL", null);
-          resetConnectBtn();
-          updateButtonState('disconnected');
-          alert("設置失敗：WebSocket URL 錯誤，請檢查輸入內容。");
-          return;
-        }
-
-        socket.onopen = () => {
-          console.log("WebSocket connected");
-          resetConnectBtn();
-          setStatus("連線中...", true);
-          configDetails.removeAttribute("open");
-          socket.send(JSON.stringify({ action: "getId" }));
-        };
-
-        socket.onmessage = (event) => {
-          const data = JSON.parse(event.data);
-          console.log("Msg received:", data);
-
-          if (data.type === "connected") {
-            myConnectionId = data.connectionId;
-            setStatus(`設置成功`,false);
-            updateButtonState('ready');
-          }
-
-          if (data.type === "image_generated") {
-            handleImageGenerated(data.image_url);
-          }
-        };
-
-        socket.onclose = () => {
-          setStatus("WebSocket 失敗，請重新連線", null);
-          resetConnectBtn();
-          updateButtonState('disconnected');
-        };
-
-        socket.onerror = (err) => {
-          console.error("Socket Error", err);
-          setStatus("連線失敗", null);
-          resetConnectBtn();
-          updateButtonState('disconnected');
-          alert("設置失敗：無法連線至 WebSocket，請檢查 URL 或網路狀態。");
-        };
-      }
-
-      function resetConnectBtn() {
-        connectBtn.innerText = "Re-establish Link";
-        connectBtn.disabled = false;
-      }
-
-      async function fetchImageAsBase64(url) {
-        try {
-
-          const response = await fetch(url, { mode: 'cors', cache: 'no-cache' });
-          
-          if (!response.ok) throw new Error(`Fetch Image failed: ${response.status}`);
-          
-          const blob = await response.blob();
-          return await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.readAsDataURL(blob);
-          });
-        } catch (e) {
-          console.warn("CORS 轉換失敗:", e);
-          return url; 
-        }
-      }
-
-      async function handleImageGenerated(imageUrl) {
-        setStatus("召喚完成！", false);
-        updateButtonState('ready');
-        isGenerating = false;
-
-        const fixedUrl = imageUrl.replace("s3.amazonaws.com", "s3.us-west-2.amazonaws.com");
-        
-        console.log("Fixing URL redirect:", fixedUrl); 
-        
-        const base64Data = await fetchImageAsBase64(fixedUrl);
-
-
-        const cardImg = document.getElementById("dispImg");
-        if (cardImg) {
-          cardImg.src = base64Data;
-        }
-      }
-
-
-      async function generateImage() {
-        const prompt = promptInput.value;
-
-        if (!prompt || !myConnectionId || isGenerating || !ENDPOINT_NAME) {
-          if (!ENDPOINT_NAME) alert("Endpoint Name Missing");
-          return;
-        }
-
-        isGenerating = true;
-        setStatus("召喚中...", true);
-        updateButtonState('generating');
-
-        try {
-          const cleanApiUrl = API_URL.endsWith("/") ? API_URL : API_URL + "/";
-
-          const response = await fetch(`${cleanApiUrl}generate`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              prompt: prompt,
-              connectionId: myConnectionId,
-              endpoint_name: ENDPOINT_NAME,
-            }),
-          });
-
-          if (response.status !== 200) {
-            const errText = await response.text();
-
-            if (errText.includes("Endpoint") && errText.includes("not found")) {
-                throw new Error("Endpoint 名稱錯誤！請檢查設定是否正確。");
-            }
-
-            throw new Error(`API Error (${response.status}): ${errText}`);
-          }
-        } catch (e) {
-          console.error(e);
-          setStatus("生成失敗：" + e.message, null);
-          updateButtonState('ready');
-          isGenerating = false;
-        }
-      }
-
-      const s3BaseUrl = "texture/";
-
-      async function loadGoogleFonts() {
-        const fonts = [
-          "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap",
-          "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap",
-          "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap",
-          "https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&display=swap"
-        ];
-
-        try {
-          const cssPromises = fonts.map(url => fetch(url).then(response => response.text()));
-          const cssContents = await Promise.all(cssPromises);
-
-          const style = document.createElement('style');
-          style.textContent = cssContents.join('\n');
-          document.head.appendChild(style);
-
-          await document.fonts.ready;
-          console.log("字型已成功內嵌並載入");
-          
-        } catch (error) {
-          console.error("字型載入失敗:", error);
-        }
-      }
-
-      loadGoogleFonts();
 
       const inputs = {
         name: document.getElementById("inputName"),
@@ -1900,7 +1614,6 @@
         footer: document.getElementById("dispFooter"),
       };
 
-      // 設定屬性資料
       const typeData = {
         lightning: {
           icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>',
@@ -1955,10 +1668,71 @@
         },
       };
 
-      // --- 文字輸入連動 ---
+      // ================= 初始化 =================
+
+      window.onload = () => {
+        const savedWs = localStorage.getItem("genai_ws_url");
+        const savedApi = localStorage.getItem("genai_api_url");
+        const savedEndpoint = localStorage.getItem("genai_endpoint_name");
+
+        if (savedWs) {
+          wsInput.value = savedWs;
+          WEBSOCKET_URL = savedWs;
+        }
+        if (savedApi) {
+          apiInput.value = savedApi;
+          API_URL = savedApi;
+        }
+        if (savedEndpoint) {
+          endpointInput.value = savedEndpoint;
+          ENDPOINT_NAME = savedEndpoint;
+        }
+
+        setStatus("尚未連線", null);
+        updateButtonState("disconnected");
+        loadGoogleFonts();
+        createEnergyControls("m1EnergyControls", 1);
+        createEnergyControls("m2EnergyControls", 2);
+        updateInfoBar();
+        updateMoveLayout();
+        inputs.type.dispatchEvent(new Event("change"));
+      };
+
+      async function loadGoogleFonts() {
+        const fonts = [
+          "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap",
+          "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap",
+          "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap",
+          "https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&display=swap",
+        ];
+
+        try {
+          const cssPromises = fonts.map((url) =>
+            fetch(url).then((response) => response.text()),
+          );
+          const cssContents = await Promise.all(cssPromises);
+
+          const style = document.createElement("style");
+          style.textContent = cssContents.join("\n");
+          document.head.appendChild(style);
+
+          await document.fonts.ready;
+          console.log("字型已成功內嵌並載入");
+        } catch (error) {
+          console.error("字型載入失敗:", error);
+        }
+      }
+
+      // ================= 綁定 =================
+
+      imgControls.scale.addEventListener("input", updateImageStyle);
+      imgControls.posX.addEventListener("input", updateImageStyle);
+      imgControls.posY.addEventListener("input", updateImageStyle);
+
       function bindText(input, output) {
         input.addEventListener("input", () => (output.innerHTML = input.value));
       }
+
       bindText(inputs.name, displays.name);
       bindText(inputs.hp, displays.hp);
       bindText(inputs.m1Name, displays.m1Name);
@@ -1969,43 +1743,9 @@
       bindText(inputs.m2Desc, displays.m2Desc);
       bindText(inputs.footer, displays.footer);
 
-      // --- 組合基本資料 ---
-      function updateInfoBar() {
-        const gap = "\u00A0\u00A0\u00A0\u00A0";
-        const text = `NO. ${inputs.infoNo.value}${gap}身高: ${inputs.infoHt.value}m${gap}體重: ${inputs.infoWt.value}kg`;
-        displays.info.innerHTML = text;
-      }
-
       inputs.infoNo.addEventListener("input", updateInfoBar);
       inputs.infoHt.addEventListener("input", updateInfoBar);
       inputs.infoWt.addEventListener("input", updateInfoBar);
-
-      // 下載對應屬性的圖片 -> 轉 Base64 -> 設定 CSS
-      async function updateCardBackground(typeKey) {
-
-        const imageUrl = `${s3BaseUrl}texture-${typeKey}.png`;
-        
-        try {
-          const response = await fetch(imageUrl, { mode: 'cors' });
-          if (!response.ok) throw new Error("Image load failed");
-          
-          const blob = await response.blob();
-          const reader = new FileReader();
-          
-          reader.onloadend = function() {
-            const base64data = reader.result;
-
-            displays.cardFrame.style.backgroundImage = `url("${base64data}")`;
-            displays.cardFrame.style.backgroundBlendMode = "normal";
-          }
-          
-          reader.readAsDataURL(blob);
-          
-        } catch (error) {
-          console.error("背景載入失敗，嘗試直接使用 URL (下載功能可能會失效):", error);
-          displays.cardFrame.style.backgroundImage = `url("${imageUrl}")`;
-        }
-      }
 
       inputs.type.addEventListener("change", () => {
         const key = inputs.type.value;
@@ -2022,6 +1762,329 @@
           displays.card.classList.remove("is-darkness");
         }
       });
+
+      document
+        .getElementById("shareModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModal();
+        });
+
+      // ================= 連線與生成 =================
+
+      function setStatus(msg, loading = false) {
+        statusDiv.innerText = msg;
+        if (loading) {
+          spinner.style.display = "block";
+          statusDiv.style.color = "var(--text-gold)";
+        } else {
+          spinner.style.display = "none";
+          statusDiv.style.color =
+            loading === null ? "#ef4444" : "var(--magic-cyan)";
+        }
+      }
+
+      function updateButtonState(state) {
+        btn.classList.remove(
+          "status-disconnected",
+          "status-ready",
+          "status-generating",
+        );
+
+        switch (state) {
+          case "disconnected":
+            btn.classList.add("status-disconnected");
+            btn.innerText = "Disconnected";
+            btn.disabled = true;
+            break;
+
+          case "ready":
+            btn.classList.add("status-ready");
+            btn.innerText = "✨ Generate Image";
+            btn.disabled = false;
+            break;
+
+          case "generating":
+            btn.classList.add("status-generating");
+            btn.innerText = "Generating...";
+            btn.disabled = true;
+            break;
+        }
+      }
+
+      async function saveAndConnect() {
+        const wsVal = wsInput.value.trim();
+        const apiVal = apiInput.value.trim();
+        const endpointVal = endpointInput.value.trim();
+
+        if (!wsVal || !apiVal || !endpointVal) {
+          alert("請輸入完整設置！");
+          return;
+        }
+
+        connectBtn.disabled = true;
+        connectBtn.innerText = "Checking API...";
+        setStatus("檢查 API 連線中...", true);
+
+        const cleanApiUrl = apiVal.endsWith("/") ? apiVal : apiVal + "/";
+
+        try {
+          await fetch(cleanApiUrl, { method: "GET", mode: "no-cors" });
+        } catch (e) {
+          console.error("API Validation Error:", e);
+          alert("API URL 設定錯誤！無法連線至該網址。");
+
+          setStatus("API URL 錯誤！", null);
+          resetConnectBtn();
+          updateButtonState("disconnected");
+          return;
+        }
+
+        connectBtn.disabled = true;
+        connectBtn.innerText = "Verifying Endpoint...";
+        setStatus("檢查 Endpoint 狀態中...", true);
+
+        try {
+          const checkUrl = `${cleanApiUrl}generate?endpoint_name=${encodeURIComponent(endpointVal)}&t=${Date.now()}`;
+
+          const response = await fetch(checkUrl, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(
+              errData.message || `Endpoint Error: ${response.status}`,
+            );
+          }
+
+          const data = await response.json();
+          console.log("Endpoint Status:", data);
+        } catch (e) {
+          console.error("Setup Error:", e);
+          if (
+            e.message.includes("Endpoint") ||
+            e.message.includes("not found")
+          ) {
+            alert(`找不到 Endpoint: "${endpointVal}" 請確認名稱是否正確`);
+          } else {
+            alert(`Endpoint 設置錯誤：\n${e.message}`);
+          }
+
+          setStatus("Endpoint 設定失敗！", null);
+          resetConnectBtn();
+          updateButtonState("disconnected");
+          return;
+        }
+
+        WEBSOCKET_URL = wsVal;
+        API_URL = apiVal;
+        ENDPOINT_NAME = endpointVal;
+
+        localStorage.setItem("genai_ws_url", wsVal);
+        localStorage.setItem("genai_api_url", apiVal);
+        localStorage.setItem("genai_endpoint_name", endpointVal);
+
+        if (socket) {
+          socket.close();
+        }
+
+        connectBtn.disabled = true;
+        initWebSocket();
+      }
+
+      function initWebSocket() {
+        try {
+          socket = new WebSocket(WEBSOCKET_URL);
+        } catch (e) {
+          setStatus("連線失敗，請檢查 URL", null);
+          resetConnectBtn();
+          updateButtonState("disconnected");
+          alert("設置失敗：WebSocket URL 錯誤，請檢查輸入內容。");
+          return;
+        }
+
+        socket.onopen = () => {
+          console.log("WebSocket connected");
+          resetConnectBtn();
+          setStatus("連線中...", true);
+          configDetails.removeAttribute("open");
+          socket.send(JSON.stringify({ action: "getId" }));
+        };
+
+        socket.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          console.log("Msg received:", data);
+
+          if (data.type === "connected") {
+            myConnectionId = data.connectionId;
+            setStatus(`設置成功`, false);
+            updateButtonState("ready");
+          }
+
+          if (data.type === "image_generated") {
+            handleImageGenerated(data.image_url);
+          }
+        };
+
+        socket.onclose = () => {
+          setStatus("WebSocket 失敗，請重新連線", null);
+          resetConnectBtn();
+          updateButtonState("disconnected");
+        };
+
+        socket.onerror = (err) => {
+          console.error("Socket Error", err);
+          setStatus("連線失敗", null);
+          resetConnectBtn();
+          updateButtonState("disconnected");
+          alert("設置失敗：無法連線至 WebSocket，請檢查 URL 或網路狀態。");
+        };
+      }
+
+      function resetConnectBtn() {
+        connectBtn.innerText = "Re-establish Link";
+        connectBtn.disabled = false;
+      }
+
+      async function generateImage() {
+        const prompt = promptInput.value;
+
+        if (!prompt || !myConnectionId || isGenerating || !ENDPOINT_NAME) {
+          if (!ENDPOINT_NAME) alert("Endpoint Name Missing");
+          return;
+        }
+
+        isGenerating = true;
+        setStatus("召喚中...", true);
+        updateButtonState("generating");
+
+        try {
+          const cleanApiUrl = API_URL.endsWith("/") ? API_URL : API_URL + "/";
+
+          const response = await fetch(`${cleanApiUrl}generate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              prompt: prompt,
+              connectionId: myConnectionId,
+              endpoint_name: ENDPOINT_NAME,
+            }),
+          });
+
+          if (response.status !== 200) {
+            const errText = await response.text();
+
+            if (errText.includes("Endpoint") && errText.includes("not found")) {
+              throw new Error("Endpoint 名稱錯誤！請檢查設定是否正確。");
+            }
+
+            throw new Error(`API Error (${response.status}): ${errText}`);
+          }
+        } catch (e) {
+          console.error(e);
+          setStatus("生成失敗：" + e.message, null);
+          updateButtonState("ready");
+          isGenerating = false;
+        }
+      }
+
+      async function handleImageGenerated(imageUrl) {
+        setStatus("召喚完成！", false);
+        updateButtonState("ready");
+        isGenerating = false;
+
+        const fixedUrl = imageUrl.replace(
+          "s3.amazonaws.com",
+          "s3.us-west-2.amazonaws.com",
+        );
+
+        console.log("Fixing URL redirect:", fixedUrl);
+
+        const base64Data = await fetchImageAsBase64(fixedUrl);
+
+        const cardImg = document.getElementById("dispImg");
+        if (cardImg) {
+          cardImg.src = base64Data;
+        }
+      }
+
+      // ================= 卡牌編輯 =================
+
+      function updateImageStyle() {
+        const scale = imgControls.scale.value;
+        const x = imgControls.posX.value;
+        const y = imgControls.posY.value;
+
+        imgControls.valScale.innerText = `${scale}x`;
+        imgControls.valX.innerText = `${x}%`;
+        imgControls.valY.innerText = `${y}%`;
+
+        displays.img.style.objectPosition = `${x}% ${y}%`;
+
+        displays.img.style.transformOrigin = `${x}% ${y}%`;
+        displays.img.style.transform = `scale(${scale})`;
+      }
+
+      function updateInfoBar() {
+        const gap = "\u00A0\u00A0\u00A0\u00A0";
+        const text = `NO. ${inputs.infoNo.value}${gap}身高: ${inputs.infoHt.value}m${gap}體重: ${inputs.infoWt.value}kg`;
+        displays.info.innerHTML = text;
+      }
+
+      async function updateCardBackground(typeKey) {
+        const imageUrl = `${s3BaseUrl}texture-${typeKey}.png`;
+
+        try {
+          const response = await fetch(imageUrl, { mode: "cors" });
+          if (!response.ok) throw new Error("Image load failed");
+
+          const blob = await response.blob();
+          const reader = new FileReader();
+
+          reader.onloadend = function () {
+            const base64data = reader.result;
+
+            displays.cardFrame.style.backgroundImage = `url("${base64data}")`;
+            displays.cardFrame.style.backgroundBlendMode = "normal";
+          };
+
+          reader.readAsDataURL(blob);
+        } catch (error) {
+          console.error(
+            "背景載入失敗，嘗試直接使用 URL (下載功能可能會失效):",
+            error,
+          );
+          displays.cardFrame.style.backgroundImage = `url("${imageUrl}")`;
+        }
+      }
+
+      function setMoveCount(count) {
+        currentMoveCount = count;
+
+        document
+          .getElementById("btnMoveCount1")
+          .classList.toggle("active", count === 1);
+        document
+          .getElementById("btnMoveCount2")
+          .classList.toggle("active", count === 2);
+
+        updateMoveLayout();
+      }
+
+      function updateMoveLayout() {
+        if (currentMoveCount === 1) {
+          move2Wrapper.style.display = "none";
+          editorMove2Area.style.display = "none";
+          movesContainer.classList.add("single-move-layout");
+        } else {
+          move2Wrapper.style.display = "flex";
+          editorMove2Area.style.display = "block";
+          movesContainer.classList.remove("single-move-layout");
+        }
+      }
 
       function createEnergyControls(containerId, moveIndex) {
         const container = document.getElementById(containerId);
@@ -2055,40 +2118,64 @@
         targetContainer.innerHTML = "";
       }
 
-      createEnergyControls("m1EnergyControls", 1);
-      createEnergyControls("m2EnergyControls", 2);
+      // ================= 功能按鈕 =================
 
-      // 下載
       async function downloadCard() {
         await document.fonts.ready;
         const card = document.getElementById("cardCard");
         const width = card.offsetWidth;
         const height = card.offsetHeight;
 
-        domtoimage.toPng(card, {
-          cacheBust: false,
-          scale: 3,
-          width: width,
-          height: height,
-          style: {
-            margin: '0',
-            boxShadow: "none",
-            transform: 'none'
-          }
-        }).then((dataUrl) => {
-          const link = document.createElement("a");
-          link.download = `${inputs.name.value}_card.png`;
-          link.href = dataUrl;
-          link.click();
-        }).catch(function (error) {
-            console.error('oops, something went wrong!', error);
+        domtoimage
+          .toPng(card, {
+            cacheBust: false,
+            scale: 3,
+            width: width,
+            height: height,
+            style: {
+              margin: "0",
+              boxShadow: "none",
+              transform: "none",
+            },
+          })
+          .then((dataUrl) => {
+            const link = document.createElement("a");
+            link.download = `${inputs.name.value}_card.png`;
+            link.href = dataUrl;
+            link.click();
+          })
+          .catch(function (error) {
+            console.error("oops, something went wrong!", error);
+          });
+      }
+
+      function getCardState() {
+        return JSON.stringify({
+          name: inputs.name.value,
+          hp: inputs.hp.value,
+          type: inputs.type.value,
+          infoNo: inputs.infoNo.value,
+          infoHt: inputs.infoHt.value,
+          infoWt: inputs.infoWt.value,
+          m1Name: inputs.m1Name.value,
+          m1Dmg: inputs.m1Dmg.value,
+          m1Desc: inputs.m1Desc.value,
+          m2Name: inputs.m2Name.value,
+          m2Dmg: inputs.m2Dmg.value,
+          m2Desc: inputs.m2Desc.value,
+          footer: inputs.footer.value,
+
+          imgSrc: displays.img.src,
+          imgStyle: displays.img.getAttribute("style"),
+
+          energy1: displays.m1Cost.innerHTML,
+          energy2: displays.m2Cost.innerHTML,
         });
       }
 
-      // Share
       async function shareCard() {
-        const btnShare = document.querySelector('.btn-share');
-        
+        const btnShare = document.querySelector(".btn-share");
+
         const currentState = getCardState();
         if (lastShareUrl && lastShareState === currentState) {
           console.log("卡牌未變更，使用快取連結");
@@ -2097,28 +2184,29 @@
         }
 
         const originalText = btnShare.innerHTML;
-        
+
         try {
           btnShare.disabled = true;
-          btnShare.innerHTML = '<div class="spinner" style="display:inline-block; border-top-color:var(--magic-cyan)"></div> Generating...';
+          btnShare.innerHTML =
+            '<div class="spinner" style="display:inline-block; border-top-color:var(--magic-cyan)"></div> Generating...';
 
           await document.fonts.ready;
-          
-          const card = document.getElementById("cardCard"); 
+
+          const card = document.getElementById("cardCard");
 
           const width = card.offsetWidth;
           const height = card.offsetHeight;
-          
+
           const dataUrl = await domtoimage.toPng(card, {
             cacheBust: false,
             scale: 3,
             width: width,
             height: height,
-            style: { 
-              margin: '0', 
-              transform: 'none',
-              boxShadow: "none"
-            }
+            style: {
+              margin: "0",
+              transform: "none",
+              boxShadow: "none",
+            },
           });
 
           const cleanApiUrl = API_URL.endsWith("/") ? API_URL : API_URL + "/";
@@ -2137,7 +2225,6 @@
           lastShareState = currentState;
 
           showModal(shareUrl);
-
         } catch (error) {
           console.error("Share failed:", error);
           alert("分享失敗，請檢查連線或稍後再試。");
@@ -2148,53 +2235,101 @@
       }
 
       function showModal(url) {
-        const modal = document.getElementById('shareModal');
-        const qrContainer = document.getElementById('qrcode');
-        const link = document.getElementById('shareLink');
-        
+        const modal = document.getElementById("shareModal");
+        const qrContainer = document.getElementById("qrcode");
+        const link = document.getElementById("shareLink");
+
         qrContainer.innerHTML = "";
-        
+
         new QRCode(qrContainer, {
           text: url,
           width: 200,
           height: 200,
-          colorDark : "#000000",
-          colorLight : "#ffffff",
-          correctLevel : QRCode.CorrectLevel.H
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H,
         });
 
         link.href = url;
-        modal.style.display = 'flex';
+        modal.style.display = "flex";
       }
 
       function closeModal() {
-        document.getElementById('shareModal').style.display = 'none';
+        document.getElementById("shareModal").style.display = "none";
       }
 
-      document.getElementById('shareModal').addEventListener('click', function(e) {
-        if (e.target === this) closeModal();
-      });
+      async function fetchImageAsBase64(url) {
+        try {
+          const response = await fetch(url, {
+            mode: "cors",
+            cache: "no-cache",
+          });
 
-      inputs.type.dispatchEvent(new Event("change"));
-      updateInfoBar();
-      
-      const movesContainer = document.getElementById("movesContainer");
-      const move2Wrapper = document.getElementById("move2Wrapper");
-      const editorMove2Area = document.getElementById("editorMove2Area");
+          if (!response.ok)
+            throw new Error(`Fetch Image failed: ${response.status}`);
 
-      function updateMoveLayout() {
-        if (currentMoveCount === 1) {
-          move2Wrapper.style.display = "none";
-          editorMove2Area.style.display = "none";
-          movesContainer.classList.add("single-move-layout");
-        } else {
-          move2Wrapper.style.display = "flex";
-          editorMove2Area.style.display = "block";
-          movesContainer.classList.remove("single-move-layout");
+          const blob = await response.blob();
+          return await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(blob);
+          });
+        } catch (e) {
+          console.warn("CORS 轉換失敗:", e);
+          return url;
         }
       }
 
-      updateMoveLayout();
+      function resetCard() {
+        inputs.name.value = "角色名稱";
+        inputs.hp.value = "60";
+        inputs.infoNo.value = "777";
+        inputs.infoHt.value = "1.7";
+        inputs.infoWt.value = "60.0";
+
+        inputs.m1Name.value = "招式一";
+        inputs.m1Dmg.value = "10";
+        inputs.m1Desc.value = "招式描述一";
+
+        inputs.m2Name.value = "招式二";
+        inputs.m2Dmg.value = "20";
+        inputs.m2Desc.value = "招式描述二";
+
+        inputs.footer.value =
+          "本次工作坊將帶領大家深入了解 Amazon SageMaker 的應用，學習如何微調影像生成模型，並親手打造一個卡牌製作網站。";
+
+        displays.name.innerHTML = inputs.name.value;
+        displays.hp.innerHTML = inputs.hp.value;
+        displays.m1Name.innerHTML = inputs.m1Name.value;
+        displays.m1Dmg.innerHTML = inputs.m1Dmg.value;
+        displays.m1Desc.innerHTML = inputs.m1Desc.value;
+        displays.m2Name.innerHTML = inputs.m2Name.value;
+        displays.m2Dmg.innerHTML = inputs.m2Dmg.value;
+        displays.m2Desc.innerHTML = inputs.m2Desc.value;
+        displays.footer.innerHTML = inputs.footer.value;
+
+        updateInfoBar();
+
+        inputs.type.value = "colorless";
+        inputs.type.dispatchEvent(new Event("change"));
+
+        clearEnergy(1);
+        clearEnergy(2);
+        addEnergy(1, "fire");
+        addEnergy(2, "fire");
+        addEnergy(2, "fire");
+
+        imgControls.scale.value = 1;
+        imgControls.posX.value = 50;
+        imgControls.posY.value = 50;
+        updateImageStyle();
+
+        setMoveCount(2);
+        updateMoveLayout();
+
+        displays.img.src =
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+      }
     </script>
   </body>
 </html>
