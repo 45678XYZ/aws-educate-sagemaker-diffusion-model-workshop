@@ -27,6 +27,12 @@ Resources:
         IgnorePublicAcls: false
         RestrictPublicBuckets: false
 
+  FrontendSeeder:
+    Type: Custom::S3Seeder
+    Properties:
+      ServiceToken: !GetAtt S3SeederFunction.Arn
+      BucketName: !Ref FrontendBucket
+
   FrontendBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
@@ -126,6 +132,35 @@ Resources:
                   - s3:PutObject
                   - s3:GetObject
                 Resource: "*"
+
+  S3SeederRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: S3SeederPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub "${FrontendBucket.Arn}"
+                  - !Sub "${FrontendBucket.Arn}/*"
 
   # ==========================================================
   # 4. WebSocket API
@@ -480,6 +515,64 @@ Resources:
                   print(f"Error: {str(e)}")
                   return {'statusCode': 500, 'body': str(e)}
 
+  S3SeederFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Runtime: python3.11
+      Timeout: 300
+      Role: !GetAtt S3SeederRole.Arn
+      Code:
+        ZipFile: |
+          import boto3
+          import cfnresponse
+          import urllib.request
+          import zipfile
+          import io
+          import mimetypes
+
+          def handler(event, context):
+              SOURCE_ZIP_URL = "https://github.com/aws-educate-tw/aws-educate-sagemaker-diffusion-model-workshop/archive/refs/heads/main.zip"
+              FOLDER_PREFIX = "aws-educate-sagemaker-diffusion-model-workshop-main/Frontend/"
+              
+              properties = event.get('ResourceProperties', {})
+              bucket_name = properties.get('BucketName')
+              
+              if event['RequestType'] == 'Delete':
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+                  return
+
+              try:
+                  print(f"Downloading from {SOURCE_ZIP_URL}")
+                  s3 = boto3.client('s3')
+                  
+                  with urllib.request.urlopen(SOURCE_ZIP_URL) as response:
+                      zip_content = response.read()
+                  
+                  with zipfile.ZipFile(io.BytesIO(zip_content)) as z:
+                      for filename in z.namelist():
+                          if filename.startswith(FOLDER_PREFIX) and not filename.endswith('/'):
+                              file_data = z.read(filename)
+                              s3_key = filename.replace(FOLDER_PREFIX, "")
+                              
+                              content_type, _ = mimetypes.guess_type(filename)
+                              if not content_type:
+                                  content_type = 'application/octet-stream'
+                                  
+                              print(f"Uploading {s3_key} ({content_type})")
+                              s3.put_object(
+                                  Bucket=bucket_name,
+                                  Key=s3_key,
+                                  Body=file_data,
+                                  ContentType=content_type
+                              )
+                              
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              except Exception as e:
+                  print(f"Error: {str(e)}")
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {"Message": str(e)})
+
   # ==========================================================
   # 6. HTTP API
   # ==========================================================
@@ -605,3 +698,7 @@ Outputs:
 
   FrontendBucketName:
     Value: !Ref FrontendBucket
+
+  FrontendWebsiteUrl:
+    Description: "Frontend Static Website URL"
+    Value: !GetAtt FrontendBucket.WebsiteURL
