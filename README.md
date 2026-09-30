@@ -1,4 +1,16 @@
-# 卡牌鍊金術：用 Amazon SageMaker 召喚你的專屬角色！
+</div>
+<br>
+<h1 align="center">卡牌鍊金術：用 Amazon SageMaker 召喚你的專屬角色！</h1>
+<p align="center"></p>
+
+<p align="center">
+  <a aria-label="Notion page" href="https://aws-educate-tw.notion.site/Amazon-SageMaker-2ec6bfee6817809eb416d6f8bdf4b170?pvs=143">
+    <img alt="Notion" src="https://img.shields.io/badge/Notion-View%20Page-brightgreen?style=social&logo=Notion&link=https%3A%2F%2Faws-educate-tw.notion.site%2FAI-SageMaker-AI-e5135d2fdc674a12bfdbbe30a95ca355">
+  </a>
+  </a>
+</p>
+
+
 
 ### 專案簡介
 本次工作坊將在 Amazon SageMaker Unified Studio 中 Fine-tune `Stable Diffusion 2.1` 模型，並結合 AWS Serverless 架構打造一個**互動式的卡牌生成網站**。使用者可以輸入帶有觸發詞的 Prompt，生成專屬風格的角色圖片並將其製作成卡牌。
